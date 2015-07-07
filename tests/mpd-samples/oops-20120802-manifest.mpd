@@ -1,0 +1,59 @@
+<MPD xmlns="urn:mpeg:DASH:schema:MPD:2011" mediaPresentationDuration="PT0H4M2.93S" minBufferTime="PT1.5S" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011"
+type="static">
+  <Period duration="PT0H4M2.93S" start="PT0S">
+    <AdaptationSet>
+      <ContentComponent contentType="video" id="1" />
+      <Representation bandwidth="4190760" codecs="avc1.640028" height="1080" id="1" mimeType="video/mp4" width="1920">
+        <BaseURL>oops-20120802-89.mp4</BaseURL>
+        <SegmentBase indexRange="674-1293">
+          <Initialization range="0-673" />
+        </SegmentBase>
+      </Representation>
+      <Representation bandwidth="2073921" codecs="avc1.4d401f" height="720" id="2" mimeType="video/mp4" width="1280">
+        <BaseURL>oops-20120802-88.mp4</BaseURL>
+        <SegmentBase indexRange="672-1291">
+          <Initialization range="0-671" />
+        </SegmentBase>
+      </Representation>
+      <Representation bandwidth="869460" codecs="avc1.4d401e" height="480" id="3" mimeType="video/mp4" width="854">
+        <BaseURL>oops-20120802-87.mp4</BaseURL>
+        <SegmentBase indexRange="672-1291">
+          <Initialization range="0-671" />
+        </SegmentBase>
+      </Representation>
+      <Representation bandwidth="686521" codecs="avc1.4d401e" height="360" id="4" mimeType="video/mp4" width="640">
+        <BaseURL>oops-20120802-86.mp4</BaseURL>
+        <SegmentBase indexRange="672-1291">
+          <Initialization range="0-671" />
+        </SegmentBase>
+      </Representation>
+      <Representation bandwidth="264835" codecs="avc1.4d4015" height="240" id="5" mimeType="video/mp4" width="426">
+        <BaseURL>oops-20120802-85.mp4</BaseURL>
+        <SegmentBase indexRange="672-1291">
+          <Initialization range="0-671" />
+        </SegmentBase>
+      </Representation>
+    </AdaptationSet>
+    <AdaptationSet>
+      <ContentComponent contentType="audio" id="2" />
+      <Representation bandwidth="127236" codecs="mp4a.40.02" id="6" mimeType="audio/mp4" numChannels="2" sampleRate="44100">
+        <BaseURL>oops-20120802-8c.mp4</BaseURL>
+        <SegmentBase indexRange="592-923">
+          <Initialization range="0-591" />
+        </SegmentBase>
+      </Representation>
+      <Representation bandwidth="255236" codecs="mp4a.40.02" id="7" mimeType="audio/mp4" numChannels="2" sampleRate="44100">
+        <BaseURL>oops-20120802-8d.mp4</BaseURL>
+        <SegmentBase indexRange="592-923">
+          <Initialization range="0-591" />
+        </SegmentBase>
+      </Representation>
+      <Representation bandwidth="31749" codecs="mp4a.40.03" id="8" mimeType="audio/mp4" numChannels="1" sampleRate="22050">
+        <BaseURL>oops-20120802-8b.mp4</BaseURL>
+        <SegmentBase indexRange="592-923">
+          <Initialization range="0-591" />
+        </SegmentBase>
+      </Representation>
+    </AdaptationSet>
+  </Period>
+</MPD>
