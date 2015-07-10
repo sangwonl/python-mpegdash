@@ -23,7 +23,7 @@ class XML2MDPTestCase(unittest.TestCase):
         self.assertMPD(MPDParser.parse(mpd_string))
 
     def test_xml2mpd_from_file(self):
-        mpd_path = './tests/mpd-samples/oops-20120802-manifest.mpd'
+        mpd_path = './tests/mpd-samples/sample-001.mpd'
         self.assertMPD(MPDParser.parse(mpd_path))
 
     def test_xml2mpd_from_url(self):

@@ -2,6 +2,8 @@ from xml.dom import minidom
 from urllib2 import urlopen
 
 from mpd.nodes import MPD
+from mpd.utils import *
+
 
 class MPDParser(object):
     @classmethod
@@ -18,7 +20,5 @@ class MPDParser(object):
 
     @classmethod
     def parse(cls, string_or_url):
-        xmldom = cls.load_xmldom(string_or_url)
-        mpd_root_node = xmldom.getElementsByTagName('MPD')
-
-        return MPD.load(mpd_root_node[0])
+        xml_root_node = cls.load_xmldom(string_or_url)
+        return parse_child_nodes(xml_root_node, 'MPD', MPD)[0]
