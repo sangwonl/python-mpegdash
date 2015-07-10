@@ -23,8 +23,9 @@ class XML2MDPTestCase(unittest.TestCase):
         self.assertMPD(MPDParser.parse(mpd_string))
 
     def test_xml2mpd_from_file(self):
-        mpd_path = './tests/mpd-samples/sample-001.mpd'
-        self.assertMPD(MPDParser.parse(mpd_path))
+        self.assertMPD(MPDParser.parse('./tests/mpd-samples/sample-001.mpd'))
+        self.assertMPD(MPDParser.parse('./tests/mpd-samples/motion-20120802-manifest.mpd'))
+        self.assertMPD(MPDParser.parse('./tests/mpd-samples/oops-20120802-manifest.mpd'))
 
     def test_xml2mpd_from_url(self):
         mpd_url = 'http://yt-dash-mse-test.commondatastorage.googleapis.com/media/motion-20120802-manifest.mpd'
@@ -33,3 +34,8 @@ class XML2MDPTestCase(unittest.TestCase):
     def assertMPD(self, mpd):
         self.assertTrue(mpd is not None)
         self.assertTrue(len(mpd.periods) > 0)
+        self.assertTrue(mpd.periods[0].adaptation_sets is not None)
+        self.assertTrue(len(mpd.periods[0].adaptation_sets) > 0)
+        self.assertTrue(mpd.periods[0].adaptation_sets[0].representations is not None)
+        self.assertTrue(len(mpd.periods[0].adaptation_sets[0].representations) > 0)
+        self.assertTrue(len(mpd.periods[0].adaptation_sets[0].representations[0].id) > 0)
