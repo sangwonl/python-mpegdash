@@ -13,7 +13,7 @@ MPEG-DASH MPD(Media Presentation Description) Parser
     
     # Parse from url
     mpd_url = 'http://yt-dash-mse-test.commondatastorage.googleapis.com/media/motion-20120802-manifest.mpd'
-    self.assertMPD(MPDParser.parse(mpd_url))
+    mpd = MPDParser.parse(mpd_url)
     
     # Parse from string
     mpd_string = '''
@@ -32,7 +32,7 @@ MPEG-DASH MPD(Media Presentation Description) Parser
       </Period>
     </MPD>
     '''
-    MPDParser.parse(mpd_string)
+    mpd = MPDParser.parse(mpd_string)
     
     # Write to xml file
     MPDParser.write(mpd, './tests/mpd-samples/output.mpd')
