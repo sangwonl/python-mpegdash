@@ -55,7 +55,6 @@ def write_child_node(xmlnode, tag_name, node):
                 new_elem = xmldoc.createElement(tag_name)
                 n.write(new_elem)
                 xmlnode.appendChild(new_elem)
-
         else:
             new_elem = xmldoc.createElement(tag_name)
             node.write(new_elem)
