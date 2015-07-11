@@ -1,39 +1,76 @@
+from xml.dom import minidom
+
 import re
 
 
-def parse_attr_value(xmlnode, attr_name, def_val):
-    val_type = type(def_val)
-    if not xmlnode.attributes.has_key(attr_name):
-        return val_type(def_val)
-
-    attr_val = xmlnode.attributes[attr_name].nodeValue
-    if type(def_val) == list:
-        elem_type = type(def_val[0]) if len(def_val) > 0 else str
-        return [elem_type(elem) for elem in re.split(',| ', attr_val)]
-
-    return val_type(attr_val)
+def _find_child_nodes_by_name(parent, name):
+    nodes = []
+    for node in parent.childNodes:
+        if node.nodeType == node.ELEMENT_NODE and node.localName == name:
+            nodes.append(node)
+    return nodes
 
 
 def parse_child_nodes(xmlnode, tag_name, node_type):
-    tags = xmlnode.getElementsByTagName(tag_name)
-    if not tags:
+    elements = _find_child_nodes_by_name(xmlnode, tag_name)
+    if not elements:
         return None
 
     nodes = []
-    for tag in tags:
-        if node_type == str:
+    for elem in elements:
+        if isinstance(node_type, (str, unicode)):
             node = xmlnode.firstChild.nodeValue
         else:
             node = node_type()
-            node.load(tag)
+            node.parse(elem)
         nodes.append(node)
 
     return nodes
 
 
-def parse_node_value(xmlnode, def_val):
-    val_type = type(def_val)
+def parse_node_value(xmlnode, value_type):
     node_val = xmlnode.firstChild.nodeValue
-    if node_val == '':
-        return val_type(def_val)
-    return val_type(node_val)
+    if node_val:
+        return value_type(node_val)
+    return None
+
+
+def parse_attr_value(xmlnode, attr_name, value_type):
+    if not xmlnode.attributes.has_key(attr_name):
+        return None
+
+    attr_val = xmlnode.attributes[attr_name].nodeValue
+    if isinstance(value_type, list):
+        attr_type = type(value_type[0]) if len(value_type) > 0 else str
+        return [attr_type(elem) for elem in re.split(r',| ', attr_val)]
+
+    return value_type(attr_val)
+
+
+def write_child_node(xmlnode, tag_name, node):
+    if node:
+        xmldoc = xmlnode if isinstance(xmlnode, minidom.Document) else xmlnode.ownerDocument
+        if isinstance(node, list):
+            for n in node:
+                new_elem = xmldoc.createElement(tag_name)
+                n.write(new_elem)
+                xmlnode.appendChild(new_elem)
+
+        else:
+            new_elem = xmldoc.createElement(tag_name)
+            node.write(new_elem)
+            xmlnode.appendChild(new_elem)
+
+
+def write_node_value(xmlnode, node_val):
+    if node_val:
+        xmldoc = xmlnode if isinstance(xmlnode, minidom.Document) else xmlnode.ownerDocument
+        text_node = xmldoc.createTextNode(str(node_val))
+        xmlnode.appendChild(text_node)
+
+
+def write_attr_value(xmlnode, attr_name, attr_val):
+    if attr_name and attr_val is not None:
+        if isinstance(type(attr_val), list):
+            attr_val = ' '.join([str(val) for val in attr_val])
+        xmlnode.setAttribute(attr_name, str(attr_val))

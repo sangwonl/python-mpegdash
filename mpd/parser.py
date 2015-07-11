@@ -22,3 +22,9 @@ class MPDParser(object):
     def parse(cls, string_or_url):
         xml_root_node = cls.load_xmldom(string_or_url)
         return parse_child_nodes(xml_root_node, 'MPD', MPD)[0]
+
+    @classmethod
+    def write(cls, mpd, filepath):
+        xml_doc = minidom.Document()
+        write_child_node(xml_doc, 'MPD', mpd)
+        xml_doc.writexml(open(filepath, 'wb'), indent='    ', addindent='    ', newl='\n')
