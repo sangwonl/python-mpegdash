@@ -1,5 +1,11 @@
+from __future__ import unicode_literals
 from xml.dom import minidom
-from urllib2 import urlopen
+
+# python3 support
+try:
+    from urllib2 import urlopen
+except:
+    from urllib.request import urlopen
 
 from mpd.nodes import MPD
 from mpd.utils import *
@@ -27,4 +33,4 @@ class MPDParser(object):
     def write(cls, mpd, filepath):
         xml_doc = minidom.Document()
         write_child_node(xml_doc, 'MPD', mpd)
-        xml_doc.writexml(open(filepath, 'wb'), indent='    ', addindent='    ', newl='\n')
+        xml_doc.writexml(open(filepath, 'w'), indent='    ', addindent='    ', newl='\n')

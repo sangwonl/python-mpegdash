@@ -1,3 +1,4 @@
+from past.builtins import unicode   # python3 compat
 from xml.dom import minidom
 
 import re
@@ -18,7 +19,7 @@ def parse_child_nodes(xmlnode, tag_name, node_type):
 
     nodes = []
     for elem in elements:
-        if isinstance(node_type, (str, unicode)):
+        if node_type in (unicode, str):
             node = xmlnode.firstChild.nodeValue
         else:
             node = node_type()
@@ -36,7 +37,7 @@ def parse_node_value(xmlnode, value_type):
 
 
 def parse_attr_value(xmlnode, attr_name, value_type):
-    if not xmlnode.attributes.has_key(attr_name):
+    if attr_name not in xmlnode.attributes.keys():
         return None
 
     attr_val = xmlnode.attributes[attr_name].nodeValue
