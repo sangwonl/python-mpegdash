@@ -8,7 +8,7 @@ except:
     from urllib.request import urlopen
 
 from mpd.nodes import MPD
-from mpd.utils import *
+from mpd.utils import parse_child_nodes, write_child_node
 
 
 class MPDParser(object):

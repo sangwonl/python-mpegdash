@@ -1,0 +1,4 @@
+*.py[co]
+*.sw[op]
+*.ropeproject
+tests/mpd-samples/output.mpd
