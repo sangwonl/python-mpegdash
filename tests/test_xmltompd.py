@@ -27,6 +27,7 @@ class XML2MDPTestCase(unittest.TestCase):
         self.assertMPD(MPDParser.parse('./tests/mpd-samples/sample-001.mpd'))
         self.assertMPD(MPDParser.parse('./tests/mpd-samples/motion-20120802-manifest.mpd'))
         self.assertMPD(MPDParser.parse('./tests/mpd-samples/oops-20120802-manifest.mpd'))
+        self.assertMPD(MPDParser.parse('./tests/mpd-samples/360p_speciment_dash.mpd'))
 
     def test_xml2mpd_from_url(self):
         mpd_url = 'http://yt-dash-mse-test.commondatastorage.googleapis.com/media/motion-20120802-manifest.mpd'

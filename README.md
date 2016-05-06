@@ -1,8 +1,10 @@
 # python-mdp-parser
 MPEG-DASH MPD(Media Presentation Description) Parser
+compatible with Python2.6+ and Python3
 
 ## Test
     $ python -m unittest discover
+    $ python3 -m unittest discover
 
 ## Usage
     from mpd.parser import MPDParser
