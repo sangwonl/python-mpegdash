@@ -3,7 +3,7 @@ import unittest
 from mpd.parser import MPDParser
 
 
-class XML2MDPTestCase(unittest.TestCase):
+class XML2MPDTestCase(unittest.TestCase):
     def test_xml2mpd_from_string(self):
         mpd_string = '''
         <MPD xmlns="urn:mpeg:DASH:schema:MPD:2011" mediaPresentationDuration="PT0H1M52.43S" minBufferTime="PT1.5S"
