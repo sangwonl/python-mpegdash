@@ -1,4 +1,7 @@
-import unittest
+try:
+        import unittest2 as unittest
+except:
+        import unittest
 
 def my_module_suite():
     loader = unittest.TestLoader()
