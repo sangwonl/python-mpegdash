@@ -1,4 +1,5 @@
-from mpd.utils import *
+from mpd.utils import parse_attr_value, parse_child_nodes, parse_node_value, \
+    write_attr_value, write_child_node, write_node_value
 
 
 class XMLNode(object):
