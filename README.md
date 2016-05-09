@@ -1,6 +1,4 @@
-[travis]: https://travis-ci.org/caststack/python-mpd-parser.svg?branch=master
-
-![travis]
+[![Build Status](https://travis-ci.org/caststack/python-mpd-parser.svg?branch=master)](https://travis-ci.org/caststack/python-mpd-parser)
 
 # python-mdp-parser
 MPEG-DASH MPD(Media Presentation Description) Parser
