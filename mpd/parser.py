@@ -8,7 +8,7 @@ except:
     from urllib.request import urlopen
 
 from mpd.nodes import MPD
-from mpd.utils import *
+from mpd.utils import parse_child_nodes, write_child_node
 
 
 class MPDParser(object):
@@ -20,7 +20,8 @@ class MPDParser(object):
             try:
                 mpd_string = urlopen(string_or_url).read()
             except ValueError:
-                mpd_string = open(string_or_url).read()
+                with open(string_or_url, 'r') as f:
+                    mpd_string = f.read()
 
         return minidom.parseString(mpd_string)
 
@@ -33,4 +34,5 @@ class MPDParser(object):
     def write(cls, mpd, filepath):
         xml_doc = minidom.Document()
         write_child_node(xml_doc, 'MPD', mpd)
-        xml_doc.writexml(open(filepath, 'w'), indent='    ', addindent='    ', newl='\n')
+        with open(filepath, 'w') as f:
+            xml_doc.writexml(f, indent='    ', addindent='    ', newl='\n')

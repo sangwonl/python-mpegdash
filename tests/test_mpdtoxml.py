@@ -3,8 +3,8 @@ import unittest
 from mpd.parser import MPDParser
 
 
-class MDP2XMLTestCase(unittest.TestCase):
-    def test_mdp2xml(self):
+class MPD2XMLTestCase(unittest.TestCase):
+    def test_mpd2xml(self):
         mpd = MPDParser.parse('./tests/mpd-samples/sample-001.mpd')
         MPDParser.write(mpd, './tests/mpd-samples/output.mpd')
 
