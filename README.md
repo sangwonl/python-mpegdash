@@ -1,3 +1,7 @@
+[travis]: https://travis-ci.org/caststack/python-mpd-parser.svg?branch=master
+
+![travis]
+
 # python-mdp-parser
 MPEG-DASH MPD(Media Presentation Description) Parser
 compatible with Python2.6+ and Python3
