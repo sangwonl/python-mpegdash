@@ -2,7 +2,7 @@
 
 ![travis]
 
-# python-mdp-parser
+# python-mpd-parser
 MPEG-DASH MPD(Media Presentation Description) Parser
 compatible with Python2.6+ and Python3
 
