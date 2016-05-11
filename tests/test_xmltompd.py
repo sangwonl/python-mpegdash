@@ -1,6 +1,6 @@
 import unittest
 
-from mpd.parser import MPDParser
+from mpegdash.parser import MPEGDASHParser
 
 
 class XML2MPDTestCase(unittest.TestCase):
@@ -21,17 +21,17 @@ class XML2MPDTestCase(unittest.TestCase):
           </Period>
         </MPD>
         '''
-        self.assertMPD(MPDParser.parse(mpd_string))
+        self.assertMPD(MPEGDASHParser.parse(mpd_string))
 
     def test_xml2mpd_from_file(self):
-        self.assertMPD(MPDParser.parse('./tests/mpd-samples/sample-001.mpd'))
-        self.assertMPD(MPDParser.parse('./tests/mpd-samples/motion-20120802-manifest.mpd'))
-        self.assertMPD(MPDParser.parse('./tests/mpd-samples/oops-20120802-manifest.mpd'))
-        self.assertMPD(MPDParser.parse('./tests/mpd-samples/360p_speciment_dash.mpd'))
+        self.assertMPD(MPEGDASHParser.parse('./tests/mpd-samples/sample-001.mpd'))
+        self.assertMPD(MPEGDASHParser.parse('./tests/mpd-samples/motion-20120802-manifest.mpd'))
+        self.assertMPD(MPEGDASHParser.parse('./tests/mpd-samples/oops-20120802-manifest.mpd'))
+        self.assertMPD(MPEGDASHParser.parse('./tests/mpd-samples/360p_speciment_dash.mpd'))
 
     def test_xml2mpd_from_url(self):
         mpd_url = 'http://yt-dash-mse-test.commondatastorage.googleapis.com/media/motion-20120802-manifest.mpd'
-        self.assertMPD(MPDParser.parse(mpd_url))
+        self.assertMPD(MPEGDASHParser.parse(mpd_url))
 
     def assertMPD(self, mpd):
         self.assertTrue(mpd is not None)

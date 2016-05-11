@@ -1,14 +1,14 @@
 import unittest
 
-from mpd.parser import MPDParser
+from mpegdash.parser import MPEGDASHParser
 
 
 class MPD2XMLTestCase(unittest.TestCase):
     def test_mpd2xml(self):
-        mpd = MPDParser.parse('./tests/mpd-samples/sample-001.mpd')
-        MPDParser.write(mpd, './tests/mpd-samples/output.mpd')
+        mpd = MPEGDASHParser.parse('./tests/mpd-samples/sample-001.mpd')
+        MPEGDASHParser.write(mpd, './tests/mpd-samples/output.mpd')
 
-        mpd2 = MPDParser.parse('./tests/mpd-samples/output.mpd')
+        mpd2 = MPEGDASHParser.parse('./tests/mpd-samples/output.mpd')
 
         all_reprs = []
         for period in mpd.periods:
