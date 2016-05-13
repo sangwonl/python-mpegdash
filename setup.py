@@ -7,8 +7,8 @@ if exists("README.md"):
 
 install_reqs = [req for req in open(abspath(join(dirname(__file__), 'requirements.txt')))]
 
-setup(name="mpd_parser",
-      packages=["mpd"],
+setup(name="mpegdash",
+      packages=["mpegdash"],
       description="MPEG-DASH MPD(Media Presentation Description) Parser",
       long_description=long_description,
       author='supercast-tv',
@@ -18,6 +18,6 @@ setup(name="mpd_parser",
       zip_safe=False,
       include_package_data=True,
       install_requires=install_reqs,
-      url="https://github.com/caststack/python-mpd-parser",
+      url="https://github.com/caststack/python-mpegdash",
       test_suite='tests.my_module_suite',
      )

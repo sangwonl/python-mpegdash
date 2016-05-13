@@ -1,4 +1,4 @@
-from mpd.utils import parse_attr_value, parse_child_nodes, parse_node_value, \
+from mpegdash.utils import parse_attr_value, parse_child_nodes, parse_node_value, \
     write_attr_value, write_child_node, write_node_value
 
 
@@ -666,7 +666,7 @@ class Period(XMLNode):
         write_child_node(xmlnode, 'Subset', self.subsets)
 
 
-class MPD(XMLNode):
+class MPEGDASH(XMLNode):
     def __init__(self):
         self.xmlns = None                                     # xmlns
         self.id = None                                        # xs:string
