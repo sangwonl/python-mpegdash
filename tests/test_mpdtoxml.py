@@ -1,7 +1,7 @@
 try:
-        import unittest2 as unittest
+    import unittest2 as unittest
 except:
-        import unittest
+    import unittest
 
 from mpegdash.parser import MPEGDASHParser
 

@@ -1,5 +1,5 @@
 from os.path import dirname, abspath, join, exists
-from setuptools import setup, find_packages
+from setuptools import setup
 
 long_description = None
 if exists("README.md"):
@@ -8,18 +8,19 @@ if exists("README.md"):
 install_reqs = [req for req in open(abspath(join(dirname(__file__), 'requirements.txt')))]
 tests_reqs = [req for req in open(abspath(join(dirname(__file__), 'test-requirements.txt')))]
 
-setup(name="mpegdash",
-      packages=["mpegdash"],
-      description="MPEG-DASH MPD(Media Presentation Description) Parser",
-      long_description=long_description,
-      author='supercast-tv',
-      author_email='gamzabaw@gmail.com',
-      version="0.1",
-      license='MIT',
-      zip_safe=False,
-      include_package_data=True,
-      install_requires=install_reqs,
-      url="https://github.com/caststack/python-mpegdash",
-      tests_require=tests_reqs,
-      test_suite='tests.my_module_suite',
-     )
+setup(
+  name="mpegdash",
+  packages=["mpegdash"],
+  description="MPEG-DASH MPD(Media Presentation Description) Parser",
+  long_description=long_description,
+  author='supercast-tv',
+  author_email='gamzabaw@gmail.com',
+  version="0.1",
+  license='MIT',
+  zip_safe=False,
+  include_package_data=True,
+  install_requires=install_reqs,
+  url="https://github.com/caststack/python-mpegdash",
+  tests_require=tests_reqs,
+  test_suite='tests.my_module_suite',
+)
