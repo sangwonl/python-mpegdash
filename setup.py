@@ -6,6 +6,7 @@ if exists("README.md"):
     long_description = open("README.md").read()
 
 install_reqs = [req for req in open(abspath(join(dirname(__file__), 'requirements.txt')))]
+tests_reqs = [req for req in open(abspath(join(dirname(__file__), 'test-requirements.txt')))]
 
 setup(name="mpegdash",
       packages=["mpegdash"],
@@ -19,5 +20,6 @@ setup(name="mpegdash",
       include_package_data=True,
       install_requires=install_reqs,
       url="https://github.com/caststack/python-mpegdash",
+      tests_require=tests_reqs,
       test_suite='tests.my_module_suite',
      )
