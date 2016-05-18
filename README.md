@@ -4,6 +4,9 @@
 MPEG-DASH MPD(Media Presentation Description) Parser
 compatible with Python2.6+ and Python3
 
+## Install
+    $ pip install mpegdash
+
 ## Test
     $ python -m unittest discover
     $ python3 -m unittest discover
