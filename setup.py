@@ -15,7 +15,7 @@ setup(
   long_description=long_description,
   author="supercast",
   author_email="gamzabaw@gmail.com",
-  version="0.1.0",
+  version="0.1.1",
   license="MIT",
   zip_safe=False,
   include_package_data=True,
