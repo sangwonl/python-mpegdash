@@ -15,7 +15,7 @@ setup(
   long_description=long_description,
   author="supercast",
   author_email="gamzabaw@gmail.com",
-  version="0.1.0",
+  version="0.1.5",
   license="MIT",
   zip_safe=False,
   include_package_data=True,
@@ -23,4 +23,13 @@ setup(
   url="https://github.com/caststack/python-mpegdash",
   tests_require=tests_reqs,
   test_suite="tests.my_module_suite",
+  classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Environment :: Other Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+  ],
 )
