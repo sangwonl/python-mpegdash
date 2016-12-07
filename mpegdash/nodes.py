@@ -571,7 +571,7 @@ class AdaptationSet(RepresentationBase):
         write_attr_value(xmlnode, 'id', self.id)
         write_attr_value(xmlnode, 'group', self.group)
         write_attr_value(xmlnode, 'lang', self.lang)
-        write_attr_value(xmlnode, 'contentType', self.lang)
+        write_attr_value(xmlnode, 'contentType', self.content_type)
         write_attr_value(xmlnode, 'par', self.par)
         write_attr_value(xmlnode, 'minBandwidth', self.min_bandwidth)
         write_attr_value(xmlnode, 'maxBandwidth', self.max_bandwidth)
