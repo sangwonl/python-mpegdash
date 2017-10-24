@@ -19,6 +19,7 @@ setup(
   license="MIT",
   zip_safe=False,
   include_package_data=True,
+  data_files = [('', ['requirements.txt', 'test-requirements.txt'])],
   install_requires=install_reqs,
   url="https://github.com/caststack/python-mpegdash",
   tests_require=tests_reqs,
