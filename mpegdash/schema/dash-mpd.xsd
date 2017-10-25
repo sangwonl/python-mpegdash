@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema targetNamespace="urn:mpeg:DASH:schema:MPD:2011" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="urn:mpeg:DASH:schema:MPD:2011">
+<xs:schema targetNamespace="urn:mpeg:dash:schema:mpd:2011" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="urn:mpeg:dash:schema:mpd:2011">
 
   <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="xlink.xsd"/>
 
@@ -21,6 +21,9 @@
       <xs:element name="Location" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="Period" type="PeriodType" maxOccurs="unbounded"/>
       <xs:element name="Metrics" type="MetricsType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="EssentialProperty" type="DescriptorType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="SupplementalProperty" type="DescriptorType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="UTCTiming" type="DescriptorType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:string"/>
@@ -58,6 +61,7 @@
       <xs:element name="EventStream" type="EventStreamType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="AdaptationSet" type="AdaptationSetType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="Subset" type="SubsetType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="SupplementalProperty" type="DescriptorType" minOccurs="0" maxOccurs="unbounded"/>
 	  <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute ref="xlink:href"/>
@@ -85,14 +89,14 @@
 
   <!-- Event  -->
   <xs:complexType name="EventType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute name="presentationTime" type="xs:unsignedLong" default="0"/>
-        <xs:attribute name="duration" type="xs:unsignedLong"/>
-        <xs:attribute name="id" type="xs:unsignedInt"/>
-        <xs:anyAttribute namespace="##other" processContents="lax"/>
-      </xs:extension>
-    </xs:simpleContent>
+    <xs:sequence>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+      <xs:attribute name="presentationTime" type="xs:unsignedLong" default="0"/>
+      <xs:attribute name="duration" type="xs:unsignedLong"/>
+      <xs:attribute name="id" type="xs:unsignedInt"/>
+      <xs:attribute name="messageData" type="xs:string"/>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
   </xs:complexType>
 
   <!-- Adaptation Set -->
@@ -186,8 +190,6 @@
         <xs:attribute name="qualityRanking" type="xs:unsignedInt"/>
         <xs:attribute name="dependencyId" type="StringVectorType"/>
         <xs:attribute name="mediaStreamStructureId" type="StringVectorType"/>
-        <xs:attribute name="numChannels" type="xs:unsignedInt"/>
-        <xs:attribute name="sampleRate" type="xs:unsignedLong"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -220,7 +222,7 @@
       <xs:element name="ContentProtection" type="DescriptorType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="EssentialProperty" type="DescriptorType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="SupplementalProperty" type="DescriptorType" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="InbandEventStream" type="DescriptorType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="InbandEventStream" type="EventStreamType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="profiles" type="xs:string"/>
@@ -347,6 +349,7 @@
       <xs:element name="S" minOccurs="1" maxOccurs="unbounded">
         <xs:complexType>
           <xs:attribute name="t" type="xs:unsignedLong"/>
+          <xs:attribute name="n" type="xs:unsignedLong" use="optional"/>
           <xs:attribute name="d" type="xs:unsignedLong" use="required"/>
           <xs:attribute name="r" type="xs:integer" use="optional" default="0"/>
           <xs:anyAttribute namespace="##other" processContents="lax"/>
