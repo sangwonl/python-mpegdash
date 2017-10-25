@@ -5,9 +5,6 @@ long_description = None
 if exists("README.md"):
     long_description = open("README.md").read()
 
-install_reqs = [req for req in open(abspath(join(dirname(__file__), 'requirements.txt')))]
-tests_reqs = [req for req in open(abspath(join(dirname(__file__), 'test-requirements.txt')))]
-
 setup(
   name="mpegdash",
   packages=["mpegdash"],
@@ -19,10 +16,9 @@ setup(
   license="MIT",
   zip_safe=False,
   include_package_data=True,
-  data_files = [('', ['requirements.txt', 'test-requirements.txt'])],
-  install_requires=install_reqs,
+  install_requires=["future"],
   url="https://github.com/caststack/python-mpegdash",
-  tests_require=tests_reqs,
+  tests_require=["unittest2"],
   test_suite="tests.my_module_suite",
   classifiers = [
     "Programming Language :: Python",
