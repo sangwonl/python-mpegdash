@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <MPD xmlns="urn:mpeg:DASH:schema:MPD:2011" mediaPresentationDuration="PT0H4M2.93S" minBufferTime="PT1.5S" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011"
 type="static">
   <Period duration="PT0H4M2.93S" start="PT0S">
