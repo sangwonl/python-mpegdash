@@ -1,5 +1,7 @@
 from past.builtins import unicode   # python3 compat
 from xml.dom import minidom
+from datetime import datetime, timedelta
+from isodate import parse_datetime, parse_duration, datetime_isoformat, duration_isoformat
 
 import re
 
@@ -44,6 +46,10 @@ def parse_attr_value(xmlnode, attr_name, value_type):
     if isinstance(value_type, list):
         attr_type = type(value_type[0]) if len(value_type) > 0 else str
         return [attr_type(elem) for elem in re.split(r',| ', attr_val)]
+    elif value_type is datetime:
+        return parse_datetime(attr_val)
+    elif value_type is timedelta:
+        return parse_duration(attr_val)
 
     return value_type(attr_val)
 
@@ -73,4 +79,9 @@ def write_attr_value(xmlnode, attr_name, attr_val):
     if attr_name and attr_val is not None:
         if isinstance(type(attr_val), list):
             attr_val = ' '.join([str(val) for val in attr_val])
+        elif type(attr_val) is datetime:
+            attr_val = datetime_isoformat(attr_val)
+        elif type(attr_val) is timedelta:
+            attr_val = duration_isoformat(attr_val)
+
         xmlnode.setAttribute(attr_name, str(attr_val))

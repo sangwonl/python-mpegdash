@@ -19,7 +19,7 @@ class MPEGDASHParser(object):
             try:
                 mpd_string = urlopen(string_or_url).read()
             except ValueError:
-                with open(string_or_url, 'r') as f:
+                with open(string_or_url, 'r', encoding='utf-8') as f:
                     mpd_string = f.read()
 
         return minidom.parseString(mpd_string)
@@ -33,5 +33,5 @@ class MPEGDASHParser(object):
     def write(cls, mpd, filepath):
         xml_doc = minidom.Document()
         write_child_node(xml_doc, 'MPD', mpd)
-        with open(filepath, 'w') as f:
-            xml_doc.writexml(f, indent='    ', addindent='    ', newl='\n')
+        with open(filepath, 'w', encoding='utf-8') as f:
+            xml_doc.writexml(f, indent='    ', addindent='    ', newl='\n', encoding='utf-8')
