@@ -36,6 +36,13 @@ class XML2MPDTestCase(unittest.TestCase):
         mpd_url = 'http://yt-dash-mse-test.commondatastorage.googleapis.com/media/motion-20120802-manifest.mpd'
         self.assert_mpd(MPEGDASHParser.parse(mpd_url))
 
+    def test_xml2mpd_from_file_with_event_messagedata(self):
+        mpd = MPEGDASHParser.parse('./tests/mpd-samples/with_event_message_data.mpd')
+        self.assertTrue(mpd.periods[0].event_streams[0].events[0].message_data is not None)
+        self.assertTrue(mpd.periods[0].event_streams[0].events[0].event_value is None)
+        self.assertTrue(mpd.periods[0].event_streams[0].events[1].message_data is None)
+        self.assertEqual(mpd.periods[0].event_streams[0].events[1].event_value, "Some Random Event Text")
+
     def assert_mpd(self, mpd):
         self.assertTrue(mpd is not None)
         self.assertTrue(len(mpd.periods) > 0)

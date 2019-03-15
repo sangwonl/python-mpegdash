@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MPD
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="urn:mpeg:dash:schema:mpd:2011"
+  xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 http://standards.iso.org/ittf/PubliclyAvailableStandards/MPEG-DASH_schema_files/DASH-MPD.xsd"
+  type="dynamic" id="123"
+  availabilityStartTime="1970-01-01T00:00:12Z"
+  publishTime="2019-03-11T16:45:56.926670Z"
+  minimumUpdatePeriod="PT2S"
+  maxSegmentDuration="PT2S"
+  minBufferTime="PT4S"
+  profiles="urn:mpeg:dash:profile:isoff-live:2011,urn:com:dashif:dash264">
+  <Period
+    id="1"
+    start="PT0S">
+    <EventStream
+      schemeIdUri="urn:scte:scte35:2014:bin"
+      timescale="10000000">
+      <Event
+        presentationTime="15523215530800000"
+        duration="260000000"
+        id="3344706862"
+        messageData="/DAlAAAAAAAAAP/wFAVchowMf+/+K9wjIP4AI7SgAAEBAQAASG43iQ==" />
+     <Event
+        presentationTime="15523215530800000"
+        duration="260000000"
+        id="3344706863">Some Random Event Text</Event>
+    </EventStream>
+    <AdaptationSet
+      id="1"
+      group="1"
+      contentType="audio"
+      lang="en"
+      segmentAlignment="true"
+      audioSamplingRate="48000"
+      mimeType="audio/mp4"
+      codecs="mp4a.40.2"
+      startWithSAP="1">
+      <AudioChannelConfiguration
+        schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011"
+        value="2">
+      </AudioChannelConfiguration>
+      <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main" />
+      <SegmentTemplate
+        timescale="48000"
+        initialization="$RepresentationID$.dash"
+        media="$RepresentationID$-$Time$.dash">
+        <SegmentTimeline>
+          <S t="74511434605440" d="92160" r="11" />
+        </SegmentTimeline>
+      </SegmentTemplate>
+      <Representation
+        id="audio_128000_en=128000"
+        bandwidth="128000">
+      </Representation>
+    </AdaptationSet>
+  </Period>
+  <UTCTiming
+    schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
+    value="https://time.akamai.com/?iso" />
+</MPD>
