@@ -690,6 +690,7 @@ class MPEGDASH(XMLNode):
         self.locations = None                                 # xs:anyURI*
         self.periods = None                                   # PeriodType+
         self.metrics = None                                   # MetricsType*
+        self.utc_timings = None                               # DescriptorType*
 
     def parse(self, xmlnode):
         self.xmlns = parse_attr_value(xmlnode, 'xmlns', str)
@@ -712,6 +713,7 @@ class MPEGDASH(XMLNode):
         self.locations = parse_child_nodes(xmlnode, 'Location', str)
         self.periods = parse_child_nodes(xmlnode, 'Period', Period)
         self.metrics = parse_child_nodes(xmlnode, 'Metrics', Metrics)
+        self.utc_timings = parse_child_nodes(xmlnode, 'UTCTiming', Descriptor)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'xmlns', self.xmlns)
@@ -734,3 +736,4 @@ class MPEGDASH(XMLNode):
         write_child_node(xmlnode, 'Location', self.locations)
         write_child_node(xmlnode, 'Period', self.periods)
         write_child_node(xmlnode, 'Metrics', self.metrics)
+        write_child_node(xmlnode, 'UTCTiming', self.utc_timings)

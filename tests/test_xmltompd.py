@@ -36,6 +36,11 @@ class XML2MPDTestCase(unittest.TestCase):
         mpd_url = 'http://yt-dash-mse-test.commondatastorage.googleapis.com/media/motion-20120802-manifest.mpd'
         self.assert_mpd(MPEGDASHParser.parse(mpd_url))
 
+    def test_xml2mpd_from_file_with_utc_timing(self):
+        mpd = MPEGDASHParser.parse('./tests/mpd-samples/utc_timing.mpd')
+        self.assertEqual(mpd.utc_timings[0].scheme_id_uri, 'urn:mpeg:dash:utc:http-iso:2014')
+        self.assertEqual(mpd.utc_timings[0].value, 'https://time.akamai.com/?iso')
+
     def assert_mpd(self, mpd):
         self.assertTrue(mpd is not None)
         self.assertTrue(len(mpd.periods) > 0)
