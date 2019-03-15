@@ -30,8 +30,16 @@ class MPEGDASHParser(object):
         return parse_child_nodes(xml_root_node, 'MPD', MPEGDASH)[0]
 
     @classmethod
-    def write(cls, mpd, filepath):
+    def get_as_doc(cls, mpd):
         xml_doc = minidom.Document()
         write_child_node(xml_doc, 'MPD', mpd)
+        return xml_doc
+
+    @classmethod
+    def write(cls, mpd, filepath):
         with open(filepath, 'w') as f:
-            xml_doc.writexml(f, indent='    ', addindent='    ', newl='\n')
+            cls.get_as_doc(mpd).writexml(f, indent='    ', addindent='    ', newl='\n')
+
+    @classmethod
+    def toprettyxml(cls, mpd):
+        return cls.get_as_doc(mpd).toprettyxml(indent='    ')
