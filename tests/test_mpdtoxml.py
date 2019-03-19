@@ -29,6 +29,8 @@ class MPD2XMLTestCase(unittest.TestCase):
         self.assertTrue(len(all_reprs) == len(all_reprs2))
 
     def test_mpd2xmlstr(self):
+        # set maxDiff to None for Python2.6
+        self.maxDiff = None
         with open('./tests/mpd-samples/sample-001.mpd') as f:
             # read the test MPD
             mpd = MPEGDASHParser.parse(f.read())
