@@ -73,4 +73,7 @@ def write_attr_value(xmlnode, attr_name, attr_val):
     if attr_name and attr_val is not None:
         if isinstance(type(attr_val), list):
             attr_val = ' '.join([str(val) for val in attr_val])
-        xmlnode.setAttribute(attr_name, str(attr_val))
+        val = str(attr_val)
+        if type(attr_val) is bool:
+            val = val.lower()
+        xmlnode.setAttribute(attr_name, val)
