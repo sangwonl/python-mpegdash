@@ -30,7 +30,7 @@ def parse_child_nodes(xmlnode, tag_name, node_type):
 
 
 def parse_node_value(xmlnode, value_type):
-    node_val = xmlnode.firstChild.nodeValue
+    node_val = xmlnode.firstChild.nodeValue if xmlnode.firstChild else None
     if node_val:
         return value_type(node_val)
     return None

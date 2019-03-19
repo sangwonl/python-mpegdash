@@ -284,18 +284,21 @@ class SegmentList(MultipleSegmentBase):
 class Event(XMLNode):
     def __init__(self):
         self.event_value = None                               # xs:string
+        self.message_data = None                              # xs:string
         self.presentation_time = None                         # xs:unsignedLong
         self.duration = None                                  # xs:unsignedLong
         self.id = None                                        # xs:unsignedInt
 
     def parse(self, xmlnode):
         self.event_value = parse_node_value(xmlnode, str)
+        self.message_data = parse_attr_value(xmlnode, 'messageData', str)
         self.presentation_time = parse_attr_value(xmlnode, 'presentationTime', int)
         self.duration = parse_attr_value(xmlnode, 'duration', int)
         self.id = parse_attr_value(xmlnode, 'id', int)
 
     def write(self, xmlnode):
         write_node_value(xmlnode, self.event_value)
+        write_attr_value(xmlnode, 'messageData', self.message_data)
         write_attr_value(xmlnode, 'presentationTime', self.presentation_time)
         write_attr_value(xmlnode, 'duration', self.duration)
         write_attr_value(xmlnode, 'id', self.id)
