@@ -2,6 +2,7 @@ from mpegdash.utils import (
     parse_attr_value, parse_child_nodes, parse_node_value,
     write_attr_value, write_child_node, write_node_value
 )
+from datetime import datetime, timedelta
 
 
 class XMLNode(object):
@@ -10,6 +11,15 @@ class XMLNode(object):
 
     def write(self, xmlnode):
         raise NotImplementedError('Should have implemented this')
+
+
+class XMLNamespaceNode(object):
+
+    def __init__(self, namespace):
+        self.namespace = namespace
+
+    def ns_attr(self, attr_name):
+        return '{0}:{1}'.format(self.namespace, attr_name) if self.namespace else attr_name
 
 
 class Subset(XMLNode):
@@ -118,8 +128,8 @@ class Range(XMLNode):
         self.duration = None                                  # xs:duration
 
     def parse(self, xmlnode):
-        self.starttime = parse_attr_value(xmlnode, 'starttime', str)
-        self.duration = parse_attr_value(xmlnode, 'duration', str)
+        self.starttime = parse_attr_value(xmlnode, 'starttime', timedelta)
+        self.duration = parse_attr_value(xmlnode, 'duration', timedelta)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'starttime', self.starttime)
@@ -639,8 +649,8 @@ class Period(XMLNode):
 
     def parse(self, xmlnode):
         self.id = parse_attr_value(xmlnode, 'id', str)
-        self.start = parse_attr_value(xmlnode, 'start', str)
-        self.duration = parse_attr_value(xmlnode, 'duration', str)
+        self.start = parse_attr_value(xmlnode, 'start', timedelta)
+        self.duration = parse_attr_value(xmlnode, 'duration', timedelta)
         self.bitstream_switching = parse_attr_value(xmlnode, 'bitstreamSwitching', bool)
 
         self.base_urls = parse_child_nodes(xmlnode, 'BaseURL', BaseURL)
@@ -669,6 +679,7 @@ class Period(XMLNode):
 
 
 class MPEGDASH(XMLNode):
+
     def __init__(self):
         self.xmlns = None                                     # xmlns
         self.id = None                                        # xs:string
@@ -691,27 +702,31 @@ class MPEGDASH(XMLNode):
         self.periods = None                                   # PeriodType+
         self.metrics = None                                   # MetricsType*
 
+        self.xsi = MPEGDASHXsi()                              # xsi:
+
     def parse(self, xmlnode):
         self.xmlns = parse_attr_value(xmlnode, 'xmlns', str)
         self.id = parse_attr_value(xmlnode, 'id', str)
         self.type = parse_attr_value(xmlnode, 'type', str)
         self.profiles = parse_attr_value(xmlnode, 'profiles', str)
-        self.availability_start_time = parse_attr_value(xmlnode, 'availabilityStartTime', str)
-        self.availability_end_time = parse_attr_value(xmlnode, 'availabilityEndTime', str)
-        self.publish_time = parse_attr_value(xmlnode, 'publishTime', str)
-        self.media_presentation_duration = parse_attr_value(xmlnode, 'mediaPresentationDuration', str)
-        self.minimum_update_period = parse_attr_value(xmlnode, 'minimumUpdatePeriod', str)
-        self.min_buffer_time = parse_attr_value(xmlnode, 'minBufferTime', str)
-        self.time_shift_buffer_depth = parse_attr_value(xmlnode, 'timeShiftBufferDepth', str)
-        self.suggested_presentation_delay = parse_attr_value(xmlnode, 'suggestedPresentationDelay', str)
-        self.max_segment_duration = parse_attr_value(xmlnode, 'maxSegmentDuration', str)
-        self.max_subsegment_duration = parse_attr_value(xmlnode, 'maxSubsegmentDuration', str)
+        self.availability_start_time = parse_attr_value(xmlnode, 'availabilityStartTime', datetime)
+        self.availability_end_time = parse_attr_value(xmlnode, 'availabilityEndTime', datetime)
+        self.publish_time = parse_attr_value(xmlnode, 'publishTime', datetime)
+        self.media_presentation_duration = parse_attr_value(xmlnode, 'mediaPresentationDuration', timedelta)
+        self.minimum_update_period = parse_attr_value(xmlnode, 'minimumUpdatePeriod', timedelta)
+        self.min_buffer_time = parse_attr_value(xmlnode, 'minBufferTime', timedelta)
+        self.time_shift_buffer_depth = parse_attr_value(xmlnode, 'timeShiftBufferDepth', timedelta)
+        self.suggested_presentation_delay = parse_attr_value(xmlnode, 'suggestedPresentationDelay', timedelta)
+        self.max_segment_duration = parse_attr_value(xmlnode, 'maxSegmentDuration', timedelta)
+        self.max_subsegment_duration = parse_attr_value(xmlnode, 'maxSubsegmentDuration', timedelta)
 
         self.program_informations = parse_child_nodes(xmlnode, 'ProgramInformation', ProgramInformation)
         self.base_urls = parse_child_nodes(xmlnode, 'BaseURL', BaseURL)
         self.locations = parse_child_nodes(xmlnode, 'Location', str)
         self.periods = parse_child_nodes(xmlnode, 'Period', Period)
         self.metrics = parse_child_nodes(xmlnode, 'Metrics', Metrics)
+
+        self.xsi.parse(xmlnode)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'xmlns', self.xmlns)
@@ -734,3 +749,21 @@ class MPEGDASH(XMLNode):
         write_child_node(xmlnode, 'Location', self.locations)
         write_child_node(xmlnode, 'Period', self.periods)
         write_child_node(xmlnode, 'Metrics', self.metrics)
+
+        self.xsi.write(xmlnode)
+
+
+class MPEGDASHXsi(XMLNamespaceNode):
+
+    def __init__(self):
+        super(MPEGDASHXsi, self).__init__('xsi')
+        self.xmlns = None                                 # xmlns:xsi
+        self.schema_location = None                       # xsi:schemaLocation
+
+    def parse(self, xmlnode):
+        self.xmlns = parse_attr_value(xmlnode, 'xmlns:' + self.namespace, str)
+        self.schema_location = parse_attr_value(xmlnode, self.ns_attr('schemaLocation'), str)
+
+    def write(self, xmlnode):
+        write_attr_value(xmlnode, 'xmlns:' + self.namespace, self.xmlns)
+        write_attr_value(xmlnode, self.ns_attr('schemaLocation'), self.schema_location)
