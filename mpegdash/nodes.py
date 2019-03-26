@@ -363,6 +363,37 @@ class ContentComponent(XMLNode):
         write_child_node(xmlnode, 'Viewpoint', self.viewpoints)
 
 
+class CencPssh(XMLNode):
+    def __init__(self):
+        self.value = ''
+
+    def parse(self, xmlnode):
+        self.value = parse_node_value(xmlnode, str)
+
+    def write(self, xmlnode):
+        write_node_value(xmlnode, self.value)
+
+
+class ContentProtection(XMLNode):
+    def __init__(self):
+        self.value = None                                    # xs:string
+        self.scheme_id_uri = ''                              # xs:anyURI (required)
+        self.cenc_default_KID = None
+        self.cenc_pssh = None
+
+    def parse(self, xmlnode):
+        self.cenc_pssh = parse_child_nodes(xmlnode, 'cenc:pssh', CencPssh)
+        self.cenc_default_KID = parse_attr_value(xmlnode, 'cenc:default_KID', str)
+        self.scheme_id_uri = parse_attr_value(xmlnode, 'schemeIdUri', str)
+        self.value = parse_attr_value(xmlnode, 'value', str)
+
+    def write(self, xmlnode):
+        write_child_node(xmlnode, 'cenc:pssh', self.cenc_pssh)
+        write_child_node(xmlnode, 'cenc:default_KID', self.cenc_default_KID)
+        write_child_node(xmlnode, 'value', self.value)
+        write_child_node(xmlnode, 'schemeIdUri', self.scheme_id_uri)
+
+
 class RepresentationBase(XMLNode):
     def __init__(self):
         self.profiles = None                                  # xs:string
@@ -702,6 +733,8 @@ class MPEGDASH(XMLNode):
         self.periods = None                                   # PeriodType+
         self.metrics = None                                   # MetricsType*
 
+        self.xmlns_cenc = None
+
         self.xsi = MPEGDASHXsi()                              # xsi:
 
     def parse(self, xmlnode):
@@ -726,6 +759,8 @@ class MPEGDASH(XMLNode):
         self.periods = parse_child_nodes(xmlnode, 'Period', Period)
         self.metrics = parse_child_nodes(xmlnode, 'Metrics', Metrics)
 
+        self.xmlns_cenc = parse_attr_value(xmlnode, 'xmlns:cenc', str)
+
         self.xsi.parse(xmlnode)
 
     def write(self, xmlnode):
@@ -749,6 +784,8 @@ class MPEGDASH(XMLNode):
         write_child_node(xmlnode, 'Location', self.locations)
         write_child_node(xmlnode, 'Period', self.periods)
         write_child_node(xmlnode, 'Metrics', self.metrics)
+
+        write_child_node(xmlnode, 'xmlns:cenc', str)
 
         self.xsi.write(xmlnode)
 
