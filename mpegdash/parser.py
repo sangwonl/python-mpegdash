@@ -8,6 +8,7 @@ except:
 
 from mpegdash.nodes import MPEGDASH
 from mpegdash.utils import parse_child_nodes, write_child_node
+from xml_utils import pretty_print
 
 
 class MPEGDASHParser(object):
@@ -42,4 +43,4 @@ class MPEGDASHParser(object):
 
     @classmethod
     def toprettyxml(cls, mpd):
-        return cls.get_as_doc(mpd).toprettyxml(indent='    ')
+        return pretty_print(cls.get_as_doc(mpd).toxml())
