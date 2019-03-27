@@ -8,7 +8,7 @@ except:
 
 from mpegdash.nodes import MPEGDASH
 from mpegdash.utils import parse_child_nodes, write_child_node
-from mpegdash.xml_utils import pretty_print
+from mpegdash.prettyprinter import pretty_print
 
 
 class MPEGDASHParser(object):
