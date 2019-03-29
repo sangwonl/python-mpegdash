@@ -6,8 +6,8 @@ try:
 except:
     from urllib.request import urlopen
 
-from mpegdash.nodes import MPEGDASH
-from mpegdash.utils import parse_child_nodes, write_child_node
+from swagger_server.third_party.python_mpegdash.mpegdash.nodes import MPEGDASH
+from swagger_server.third_party.python_mpegdash.mpegdash.utils import parse_child_nodes, write_child_node
 
 
 class MPEGDASHParser(object):

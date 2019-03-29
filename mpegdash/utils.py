@@ -9,7 +9,8 @@ import re
 def _find_child_nodes_by_name(parent, name):
     nodes = []
     for node in parent.childNodes:
-        if node.nodeType == node.ELEMENT_NODE and node.localName == name:
+        # changed node.localName by node.tagName to support tag with prefix
+        if node.nodeType == node.ELEMENT_NODE and node.tagName == name:
             nodes.append(node)
     return nodes
 
