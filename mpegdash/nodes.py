@@ -1,4 +1,4 @@
-from swagger_server.third_party.python_mpegdash.mpegdash.utils import (
+from .utils import (
     parse_attr_value, parse_child_nodes, parse_node_value,
     write_attr_value, write_child_node, write_node_value
 )
