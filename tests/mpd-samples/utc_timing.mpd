@@ -6,6 +6,11 @@
   type="static" id="1"
   minBufferTime="PT4S"
   profiles="urn:mpeg:dash:profile:isoff-live:2011">
+  <Location>http://www.example.com/location.mpd</Location>
+  <ProgramInformation>
+    <Title>Test Title</Title>
+    <Source>Test Source</Source>
+  </ProgramInformation>
   <Period
     id="1"
     start="PT0S"/>

@@ -66,6 +66,17 @@ class BaseURL(XMLNode):
         write_attr_value(xmlnode, 'availabilityTimeComplete', self.availability_time_complete)
 
 
+class XsStringElement(XMLNode):
+    def __init__(self):
+        self.text = None
+
+    def parse(self, xmlnode):
+        self.text = parse_node_value(xmlnode, str)
+
+    def write(self, xmlnode):
+        write_node_value(xmlnode, self.text)
+
+
 class ProgramInformation(XMLNode):
     def __init__(self):
         self.lang = None                                      # xs:language
@@ -79,9 +90,9 @@ class ProgramInformation(XMLNode):
         self.lang = parse_attr_value(xmlnode, 'lang', str)
         self.more_information_url = parse_attr_value(xmlnode, 'moreInformationURL', str)
 
-        self.titles = parse_child_nodes(xmlnode, 'Title', str)
-        self.sources = parse_child_nodes(xmlnode, 'Source', str)
-        self.copyrights = parse_child_nodes(xmlnode, 'Copyright', str)
+        self.titles = parse_child_nodes(xmlnode, 'Title', XsStringElement)
+        self.sources = parse_child_nodes(xmlnode, 'Source', XsStringElement)
+        self.copyrights = parse_child_nodes(xmlnode, 'Copyright', XsStringElement)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'lang', self.lang)
@@ -713,7 +724,7 @@ class MPEGDASH(XMLNode):
 
         self.program_informations = parse_child_nodes(xmlnode, 'ProgramInformation', ProgramInformation)
         self.base_urls = parse_child_nodes(xmlnode, 'BaseURL', BaseURL)
-        self.locations = parse_child_nodes(xmlnode, 'Location', str)
+        self.locations = parse_child_nodes(xmlnode, 'Location', XsStringElement)
         self.periods = parse_child_nodes(xmlnode, 'Period', Period)
         self.metrics = parse_child_nodes(xmlnode, 'Metrics', Metrics)
         self.utc_timings = parse_child_nodes(xmlnode, 'UTCTiming', Descriptor)
