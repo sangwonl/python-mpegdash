@@ -65,6 +65,15 @@ class BaseURL(XMLNode):
         write_attr_value(xmlnode, 'availabilityTimeOffset', self.availability_time_offset)
         write_attr_value(xmlnode, 'availabilityTimeComplete', self.availability_time_complete)
 
+class Title(XMLNode):
+    def __init__(self):
+        self.title = None # xs:string*
+
+    def parse(self, xmlnode):
+        self.title = parse_node_value(xmlnode, str)
+
+    def write(self, xmlnode):
+        write_node_value(xmlnode, self.title)
 
 class ProgramInformation(XMLNode):
     def __init__(self):
@@ -79,7 +88,7 @@ class ProgramInformation(XMLNode):
         self.lang = parse_attr_value(xmlnode, 'lang', str)
         self.more_information_url = parse_attr_value(xmlnode, 'moreInformationURL', str)
 
-        self.titles = parse_child_nodes(xmlnode, 'Title', str)
+        self.titles = parse_child_nodes(xmlnode, 'Title', Title)
         self.sources = parse_child_nodes(xmlnode, 'Source', str)
         self.copyrights = parse_child_nodes(xmlnode, 'Copyright', str)
 

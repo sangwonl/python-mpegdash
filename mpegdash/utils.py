@@ -20,7 +20,7 @@ def parse_child_nodes(xmlnode, tag_name, node_type):
     nodes = []
     for elem in elements:
         if node_type in (unicode, str):
-            node = xmlnode.firstChild.nodeValue
+            node = elem.firstChild.nodeValue
         else:
             node = node_type()
             node.parse(elem)
