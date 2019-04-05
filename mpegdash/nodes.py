@@ -1,4 +1,4 @@
-from mpegdash.utils import (
+from .utils import (
     parse_attr_value, parse_child_nodes, parse_node_value,
     write_attr_value, write_child_node, write_node_value
 )
@@ -11,15 +11,6 @@ class XMLNode(object):
 
     def write(self, xmlnode):
         raise NotImplementedError('Should have implemented this')
-
-
-class XMLNamespaceNode(object):
-
-    def __init__(self, namespace):
-        self.namespace = namespace
-
-    def ns_attr(self, attr_name):
-        return '{0}:{1}'.format(self.namespace, attr_name) if self.namespace else attr_name
 
 
 class Subset(XMLNode):
@@ -363,6 +354,49 @@ class ContentComponent(XMLNode):
         write_child_node(xmlnode, 'Viewpoint', self.viewpoints)
 
 
+class CencPssh(XMLNode):
+    def __init__(self):
+        self.value = ''                                     # xs:string
+
+    def parse(self, xmlnode):
+        self.value = parse_node_value(xmlnode, str)
+
+    def write(self, xmlnode):
+        write_node_value(xmlnode, self.value)
+
+
+class ContentProtectionBase(XMLNode):
+    def __init__(self):
+        self.value = None                                    # xs:string
+        self.scheme_id_uri = ''                              # xs:anyURI (required)
+        self.cenc_default_KID = None                         # xs:string
+
+    def parse(self, xmlnode):
+        self.value = parse_attr_value(xmlnode, 'value', str)
+        self.scheme_id_uri = parse_attr_value(xmlnode, 'schemeIdUri', str)
+        self.cenc_default_KID = parse_attr_value(xmlnode, 'cenc:default_KID', str)
+
+    def write(self, xmlnode):
+        write_attr_value(xmlnode, 'value', self.value)
+        write_attr_value(xmlnode, 'schemeIdUri', self.scheme_id_uri)
+        write_attr_value(xmlnode, 'cenc:default_KID', self.cenc_default_KID)
+
+
+class ContentProtection(ContentProtectionBase):
+    def __init__(self):
+        ContentProtectionBase.__init__(self)
+
+        self.cenc_pssh = None                                # xs:string
+
+    def parse(self, xmlnode):
+        ContentProtectionBase.parse(self, xmlnode)
+        self.cenc_pssh = parse_child_nodes(xmlnode, 'cenc:pssh', CencPssh)
+
+    def write(self, xmlnode):
+        ContentProtectionBase.write(self, xmlnode)
+        write_child_node(xmlnode, 'cenc:pssh', self.cenc_pssh)
+
+
 class RepresentationBase(XMLNode):
     def __init__(self):
         self.profiles = None                                  # xs:string
@@ -382,7 +416,6 @@ class RepresentationBase(XMLNode):
 
         self.frame_packings = None                            # DescriptorType*
         self.audio_channel_configurations = None              # DescriptorType*
-        self.content_protections = None                       # DescriptorType*
         self.essential_properties = None                      # DescriptorType*
         self.supplemental_properties = None                   # DescriptorType*
         self.inband_event_streams = None                      # DescriptorType*
@@ -405,7 +438,6 @@ class RepresentationBase(XMLNode):
 
         self.frame_packings = parse_child_nodes(xmlnode, 'FramePacking', Descriptor)
         self.audio_channel_configurations = parse_child_nodes(xmlnode, 'AudioChannelConfiguration', Descriptor)
-        self.content_protections = parse_child_nodes(xmlnode, 'ContentProtection', Descriptor)
         self.essential_properties = parse_child_nodes(xmlnode, 'EssentialProperty', Descriptor)
         self.supplemental_properties = parse_child_nodes(xmlnode, 'SupplementalProperty', Descriptor)
         self.inband_event_streams = parse_child_nodes(xmlnode, 'InbandEventStream', Descriptor)
@@ -428,7 +460,6 @@ class RepresentationBase(XMLNode):
 
         write_child_node(xmlnode, 'FramePacking', self.frame_packings)
         write_child_node(xmlnode, 'AudioChannelConfiguration', self.audio_channel_configurations)
-        write_child_node(xmlnode, 'ContentProtection', self.content_protections)
         write_child_node(xmlnode, 'EssentialProperty', self.essential_properties)
         write_child_node(xmlnode, 'SupplementalProperty', self.supplemental_properties)
         write_child_node(xmlnode, 'InbandEventStream', self.inband_event_streams)
@@ -543,6 +574,8 @@ class AdaptationSet(RepresentationBase):
         self.segment_templates = None                         # SegmentTemplateType*
         self.representations = None                           # RepresentationType*
 
+        self.content_protections = None                       # ContentProtectionType
+
     def parse(self, xmlnode):
         RepresentationBase.parse(self, xmlnode)
 
@@ -574,6 +607,7 @@ class AdaptationSet(RepresentationBase):
         self.segment_lists = parse_child_nodes(xmlnode, 'SegmentList', SegmentList)
         self.segment_templates = parse_child_nodes(xmlnode, 'SegmentTemplate', SegmentTemplate)
         self.representations = parse_child_nodes(xmlnode, 'Representation', Representation)
+        self.content_protections = parse_child_nodes(xmlnode, 'ContentProtection', ContentProtection)
 
     def write(self, xmlnode):
         RepresentationBase.write(self, xmlnode)
@@ -606,6 +640,7 @@ class AdaptationSet(RepresentationBase):
         write_child_node(xmlnode, 'SegmentList', self.segment_lists)
         write_child_node(xmlnode, 'SegmentTemplate', self.segment_templates)
         write_child_node(xmlnode, 'Representation', self.representations)
+        write_child_node(xmlnode, 'ContentProtection', self.content_protections)
 
 
 class EventStream(XMLNode):
@@ -702,7 +737,9 @@ class MPEGDASH(XMLNode):
         self.periods = None                                   # PeriodType+
         self.metrics = None                                   # MetricsType*
 
-        self.xsi = MPEGDASHXsi()                              # xsi:
+        self.xmlns_cenc = None                                # xs:string
+        self.xmlns_xsi = None                                 # xs:string
+        self.xsi_schema_location = None                       # xs:string
 
     def parse(self, xmlnode):
         self.xmlns = parse_attr_value(xmlnode, 'xmlns', str)
@@ -719,14 +756,15 @@ class MPEGDASH(XMLNode):
         self.suggested_presentation_delay = parse_attr_value(xmlnode, 'suggestedPresentationDelay', timedelta)
         self.max_segment_duration = parse_attr_value(xmlnode, 'maxSegmentDuration', timedelta)
         self.max_subsegment_duration = parse_attr_value(xmlnode, 'maxSubsegmentDuration', timedelta)
+        self.xmlns_cenc = parse_attr_value(xmlnode, 'xmlns:cenc', str)
+        self.xmlns_xsi = parse_attr_value(xmlnode, 'xmlns:xsi', str)
+        self.xsi_schema_location = parse_attr_value(xmlnode, 'xsi:schemaLocation', str)
 
         self.program_informations = parse_child_nodes(xmlnode, 'ProgramInformation', ProgramInformation)
         self.base_urls = parse_child_nodes(xmlnode, 'BaseURL', BaseURL)
         self.locations = parse_child_nodes(xmlnode, 'Location', str)
         self.periods = parse_child_nodes(xmlnode, 'Period', Period)
         self.metrics = parse_child_nodes(xmlnode, 'Metrics', Metrics)
-
-        self.xsi.parse(xmlnode)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'xmlns', self.xmlns)
@@ -744,26 +782,12 @@ class MPEGDASH(XMLNode):
         write_attr_value(xmlnode, 'maxSegmentDuration', self.max_segment_duration)
         write_attr_value(xmlnode, 'maxSubsegmentDuration', self.max_subsegment_duration)
 
+        write_attr_value(xmlnode, 'xmlns:cenc', self.xmlns_cenc)
+        write_attr_value(xmlnode, 'xmlns:xsi', self.xmlns_xsi)
+        write_attr_value(xmlnode, 'xsi:schemaLocation', self.xsi_schema_location)
+
         write_child_node(xmlnode, 'ProgramInformation', self.program_informations)
         write_child_node(xmlnode, 'BaseURL', self.base_urls)
         write_child_node(xmlnode, 'Location', self.locations)
         write_child_node(xmlnode, 'Period', self.periods)
         write_child_node(xmlnode, 'Metrics', self.metrics)
-
-        self.xsi.write(xmlnode)
-
-
-class MPEGDASHXsi(XMLNamespaceNode):
-
-    def __init__(self):
-        super(MPEGDASHXsi, self).__init__('xsi')
-        self.xmlns = None                                 # xmlns:xsi
-        self.schema_location = None                       # xsi:schemaLocation
-
-    def parse(self, xmlnode):
-        self.xmlns = parse_attr_value(xmlnode, 'xmlns:' + self.namespace, str)
-        self.schema_location = parse_attr_value(xmlnode, self.ns_attr('schemaLocation'), str)
-
-    def write(self, xmlnode):
-        write_attr_value(xmlnode, 'xmlns:' + self.namespace, self.xmlns)
-        write_attr_value(xmlnode, self.ns_attr('schemaLocation'), self.schema_location)
