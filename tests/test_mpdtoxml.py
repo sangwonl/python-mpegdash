@@ -3,6 +3,7 @@ try:
 except:
     import unittest
 
+from sys import version_info
 from mpegdash.parser import MPEGDASHParser
 
 
@@ -27,6 +28,19 @@ class MPD2XMLTestCase(unittest.TestCase):
 
         self.assertTrue(len(all_reprs) == 5)
         self.assertTrue(len(all_reprs) == len(all_reprs2))
+
+    def test_mpd2xml_boolean_casing(self):
+        mpd = MPEGDASHParser.parse('./tests/mpd-samples/with_event_message_data.mpd')
+        MPEGDASHParser.write(mpd, './tests/mpd-samples/output.mpd')
+
+        with open('./tests/mpd-samples/output.mpd') as f:
+            regex = r'segmentAlignment=\"true\"'
+
+            # assertRegexpMatches is deprecated in 3, assertRegex not in 2
+            if version_info > (3, 1,):
+                self.assertRegex(f.read(), regex)
+            else:
+                self.assertRegexpMatches(f.read(), regex)
 
     def test_mpd2xmlstr(self):
         # set maxDiff to None for Python2.6
