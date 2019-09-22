@@ -10,6 +10,7 @@ setup(
   packages=["mpegdash"],
   description="MPEG-DASH MPD(Media Presentation Description) Parser",
   long_description=long_description,
+  long_description_content_type='text/markdown',
   author="sangwonl",
   author_email="gamzabaw@gmail.com",
   version="0.2.0",
