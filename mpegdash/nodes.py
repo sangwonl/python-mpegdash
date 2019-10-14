@@ -521,6 +521,7 @@ class AdaptationSet(RepresentationBase):
         self.id = None                                        # xs:unsignedInt
         self.group = None                                     # xs:unsignedInt
         self.lang = None                                      # xs:language
+        self.label = None                                     # xs:string
         self.content_type = None                              # xs:string
         self.par = None                                       # RatioType
         self.min_bandwidth = None                             # xs:unsignedInt
@@ -553,6 +554,7 @@ class AdaptationSet(RepresentationBase):
         self.id = parse_attr_value(xmlnode, 'id', int)
         self.group = parse_attr_value(xmlnode, 'group', int)
         self.lang = parse_attr_value(xmlnode, 'lang', str)
+        self.label = parse_attr_value(xmlnode, 'label', str)
         self.content_type = parse_attr_value(xmlnode, 'contentType', str)
         self.par = parse_attr_value(xmlnode, 'par', str)
         self.min_bandwidth = parse_attr_value(xmlnode, 'minBandwidth', int)
@@ -585,6 +587,7 @@ class AdaptationSet(RepresentationBase):
         write_attr_value(xmlnode, 'id', self.id)
         write_attr_value(xmlnode, 'group', self.group)
         write_attr_value(xmlnode, 'lang', self.lang)
+        write_attr_value(xmlnode, 'label', self.label)
         write_attr_value(xmlnode, 'contentType', self.content_type)
         write_attr_value(xmlnode, 'par', self.par)
         write_attr_value(xmlnode, 'minBandwidth', self.min_bandwidth)

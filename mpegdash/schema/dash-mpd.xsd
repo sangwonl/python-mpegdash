@@ -120,6 +120,7 @@
         <xs:attribute name="id" type="xs:unsignedInt"/>
         <xs:attribute name="group" type="xs:unsignedInt"/>
         <xs:attribute name="lang" type="xs:language"/>
+        <xs:attribute name="label" type="xs:string" />
         <xs:attribute name="contentType" type="xs:string"/>
         <xs:attribute name="par" type="RatioType"/>
         <xs:attribute name="minBandwidth" type="xs:unsignedInt"/>

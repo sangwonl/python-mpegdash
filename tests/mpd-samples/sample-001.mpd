@@ -64,7 +64,7 @@
             </Representation>
         </AdaptationSet>
         <!-- Just the audio -->
-        <AdaptationSet mimeType="audio/mp2t">
+        <AdaptationSet mimeType="audio/mp2t" lang="eng" label="English">
             <BaseURL>audio/</BaseURL>
             <!-- We're just going to offer one audio representation, since audio bandwidth isn't very
                  important. -->
