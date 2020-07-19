@@ -4,7 +4,7 @@
     <Period duration="PT30S">
         <BaseURL>ad/</BaseURL>
         <!-- Everything in one Adaptation Set -->
-        <AdaptationSet mimeType="video/mp2t">
+        <AdaptationSet selectionPriority="123" mimeType="video/mp2t">
             <!-- 720p Representation at 3.2 Mbps -->
             <Representation id="720p" bandwidth="3200000" width="1280" height="720">
                 <!-- Just use one segment, since the ad is only 30 seconds long -->
