@@ -533,6 +533,7 @@ class AdaptationSet(RepresentationBase):
         self.min_frame_rate = None                            # FrameRateType
         self.max_frame_rate = None                            # FrameRateType
         self.segment_alignment = None                         # ConditionalUintType
+        self.selection_priority = None                        # xs:unsignedInt
         self.subsegment_alignment = None                      # ConditionalUintType
         self.subsegment_starts_with_sap = None                # SAPType
         self.bitstream_switching = None                       # xs:boolean
@@ -566,6 +567,7 @@ class AdaptationSet(RepresentationBase):
         self.min_frame_rate = parse_attr_value(xmlnode, 'minFrameRate', str)
         self.max_frame_rate = parse_attr_value(xmlnode, 'maxFrameRate', str)
         self.segment_alignment = parse_attr_value(xmlnode, 'segmentAlignment', bool)
+        self.selection_priority = parse_attr_value(xmlnode, 'selectionPriority', int)
         self.subsegment_alignment = parse_attr_value(xmlnode, 'subsegmentAlignment', bool)
         self.subsegment_starts_with_sap = parse_attr_value(xmlnode, 'subsegmentStartsWithSAP', int)
         self.bitstream_switching = parse_attr_value(xmlnode, 'bitstreamSwitching', bool)
@@ -599,6 +601,7 @@ class AdaptationSet(RepresentationBase):
         write_attr_value(xmlnode, 'minFrameRate', self.min_frame_rate)
         write_attr_value(xmlnode, 'maxFrameRate', self.max_frame_rate)
         write_attr_value(xmlnode, 'segmentAlignment', self.segment_alignment)
+        write_attr_value(xmlnode, 'selectionPriority', self.selection_priority)
         write_attr_value(xmlnode, 'subsegmentAlignment', self.subsegment_alignment)
         write_attr_value(xmlnode, 'subsegmentStartsWithSAP', self.subsegment_starts_with_sap)
         write_attr_value(xmlnode, 'bitstreamSwitching', self.bitstream_switching)
