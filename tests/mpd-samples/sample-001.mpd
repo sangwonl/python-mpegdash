@@ -26,7 +26,7 @@
     <Period duration="PT5M">
         <BaseURL>main/</BaseURL>
         <!-- Just the video -->
-        <AdaptationSet mimeType="video/mp2t">
+        <AdaptationSet mimeType="video/mp2t" profiles="urn:mpeg:dash:profile:full:2011">
             <BaseURL>video/</BaseURL>
             <!-- 720p Representation at 3.2 Mbps -->
             <Representation id="720p" bandwidth="3200000" width="1280" height="720">

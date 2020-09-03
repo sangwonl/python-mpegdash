@@ -369,6 +369,7 @@ class ContentComponent(XMLNode):
 
 class RepresentationBase(XMLNode):
     def __init__(self):
+        self.profile = None                                   # xs:string
         self.profiles = None                                  # xs:string
         self.width = None                                     # xs:unsigendInt
         self.height = None                                    # xs:unsigendInt
@@ -392,7 +393,8 @@ class RepresentationBase(XMLNode):
         self.inband_event_streams = None                      # DescriptorType*
 
     def parse(self, xmlnode):
-        self.profiles = parse_attr_value(xmlnode, 'profile', str)
+        self.profile = parse_attr_value(xmlnode, 'profile', str)
+        self.profiles = parse_attr_value(xmlnode, 'profiles', str)
         self.width = parse_attr_value(xmlnode, 'width', int)
         self.height = parse_attr_value(xmlnode, 'height', int)
         self.sar = parse_attr_value(xmlnode, 'sar', str)
@@ -415,7 +417,8 @@ class RepresentationBase(XMLNode):
         self.inband_event_streams = parse_child_nodes(xmlnode, 'InbandEventStream', Descriptor)
 
     def write(self, xmlnode):
-        write_attr_value(xmlnode, 'profile', self.profiles)
+        write_attr_value(xmlnode, 'profile', self.profile)
+        write_attr_value(xmlnode, 'profiles', self.profiles)
         write_attr_value(xmlnode, 'width', self.width)
         write_attr_value(xmlnode, 'height', self.height)
         write_attr_value(xmlnode, 'sar', self.sar)
