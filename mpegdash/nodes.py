@@ -320,16 +320,19 @@ class Descriptor(XMLNode):
         self.scheme_id_uri = ''                               # xs:anyURI (required)
         self.value = None                                     # xs:string
         self.id = None                                        # xs:string
+        self.key_id = None                                    # xs:string
 
     def parse(self, xmlnode):
         self.scheme_id_uri = parse_attr_value(xmlnode, 'schemeIdUri', str)
         self.value = parse_attr_value(xmlnode, 'value', str)
         self.id = parse_attr_value(xmlnode, 'id', str)
+        self.key_id = parse_attr_value(xmlnode, 'ns2:default_KID', str)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'schemeIdUri', self.scheme_id_uri)
         write_attr_value(xmlnode, 'value', self.value)
         write_attr_value(xmlnode, 'id', self.id)
+        write_attr_value(xmlnode, 'ns2:default_KID', self.key_id)
 
 
 class ContentComponent(XMLNode):
