@@ -43,7 +43,7 @@ def parse_attr_value(xmlnode, attr_name, value_type):
     attr_val = xmlnode.attributes[attr_name].nodeValue
     if isinstance(value_type, list):
         attr_type = type(value_type[0]) if len(value_type) > 0 else str
-        return [attr_type(elem) for elem in re.split(r',| ', attr_val)]
+        return [attr_type(elem) for elem in re.split(r'[, ]', attr_val)]
 
     return value_type(attr_val)
 
