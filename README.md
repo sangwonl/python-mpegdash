@@ -1,16 +1,19 @@
-[![Build Status](https://travis-ci.org/sangwonl/python-mpegdash.svg?branch=master)](https://travis-ci.org/sangwonl/python-mpegdash)
-
 # python-mpegdash
-MPEG-DASH MPD(Media Presentation Description) Parser
-compatible with Python2.6+ and Python3
 
+MPEG-DASH MPD (Media Presentation Description) Parser compatible with Python 2.6+ and Python 3.
 
-## Install
+[![Build Status](https://travis-ci.org/sangwonl/python-mpegdash.svg?branch=master)](https://travis-ci.org/sangwonl/python-mpegdash)
+[![License](https://img.shields.io/github/license/sangwonl/python-mpegdash?style=flat)](https://github.com/sangwonl/python-mpegdash/blob/master/LICENSE)
+
+* * *
+
+## Installation
 
 ```bash
 $ pip install mpegdash
 ```
 
+* * *
 
 ## Test
 
@@ -19,10 +22,11 @@ $ python -m unittest discover
 $ python3 -m unittest discover
 ```
 
+* * *
 
 ## Usage
 
-```python
+```py
 from mpegdash.parser import MPEGDASHParser
 
 # Parse from file path
@@ -55,3 +59,10 @@ mpd = MPEGDASHParser.parse(mpd_string)
 # Write to xml file
 MPEGDASHParser.write(mpd, './tests/mpd-samples/output.mpd')
 ```
+
+* * *
+
+## License
+
+This project is released under the MIT license.
+Please read and agree to the license before use, it can be found in the [LICENSE](LICENSE) file.
