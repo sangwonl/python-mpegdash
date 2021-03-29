@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/github/workflow/status/sangwonl/python-mpegdash/Build%20Status?label=Python%203.6%2B%20builds)](https://github.com/sangwonl/python-mpegdash/actions?query=workflow%3A%22Build+Status%22)
+[![Build Status](https://img.shields.io/github/workflow/status/sangwonl/python-mpegdash/Build%20Status?label=Python%202.7%2B%20builds)](https://github.com/sangwonl/python-mpegdash/actions?query=workflow%3A%22Build+Status%22)
 
 # python-mpegdash
 MPEG-DASH MPD(Media Presentation Description) Parser
