@@ -3,7 +3,7 @@ from xml.dom import minidom
 # python3 support
 try:
     from urllib2 import urlopen
-except:
+except ImportError:
     from urllib.request import urlopen
 
 from mpegdash.nodes import MPEGDASH
