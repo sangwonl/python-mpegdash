@@ -50,7 +50,7 @@ def pretty_print(xmlstr, indent='    ', line_break='\n'):
         # pad the line and return
         return (indent * (current[0] - addition)) + line
 
-    # split the document into line, indent each line, then rejoin lines
+    # split the document into lines, indent each line, then rejoin lines
     return line_break.join(
         map(
             indent_line,
