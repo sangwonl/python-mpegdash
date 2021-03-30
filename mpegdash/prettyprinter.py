@@ -1,4 +1,3 @@
-
 # inspired by https://gist.github.com/sente/1083506
 # The MIT License (MIT)
 
@@ -24,20 +23,21 @@
 
 import re
 
-def pretty_print(xmlstr, indent='    ', newl='\n'):
+
+def pretty_print(xmlstr, indent='    ', line_break='\n'):
     # python2 doesn't have nonlocal
     current = [0]
 
-    def indentline(line):
+    def indent_line(line):
         addition = 0
 
-        if re.match('.+<\/\w[^>]*>$', line):
+        if re.match(r'.+</\w[^>]*>$', line):
             # single line text element, don't change indentation
             addition = 0
-        elif re.match('^<\/\w', line) and current[0] > 0:
-            # end of element and have padding, decrement identation by one
+        elif re.match(r'^</\w', line) and current[0] > 0:
+            # end of element and have padding, decrement indentation by one
             current[0] -= 1
-        elif re.match('^<\w[^>]*[^\/]>.*$', line):
+        elif re.match(r'^<\w[^>]*[^/]>.*$', line):
             # start of element, increment indentation by one
             addition = 1
         else:
@@ -50,10 +50,10 @@ def pretty_print(xmlstr, indent='    ', newl='\n'):
         # pad the line and return
         return (indent * (current[0] - addition)) + line
 
-    # split the document into line, indent each line, then rejoin lines
-    return (newl).join(
+    # split the document into lines, indent each line, then rejoin lines
+    return line_break.join(
         map(
-            indentline,
-            re.sub('(>)(<)(\/*)', r'\1\n\2\3', xmlstr).split('\n')
+            indent_line,
+            re.sub('(>)(<)(/*)', r'\1\n\2\3', xmlstr).split('\n')
         )
     )
