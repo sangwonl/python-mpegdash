@@ -161,7 +161,7 @@ class S(XMLNode):
     def write(self, xmlnode):
         write_attr_value(xmlnode, 't', self.t)
         write_attr_value(xmlnode, 'd', self.d)
-        write_attr_value(xmlnode, 'r', self.r)
+        write_attr_value(xmlnode, 'r', None if self.r == 0 else self.r)
 
 
 class SegmentTimeline(XMLNode):
