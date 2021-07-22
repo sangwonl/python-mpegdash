@@ -321,18 +321,21 @@ class Descriptor(XMLNode):
         self.value = None                                     # xs:string
         self.id = None                                        # xs:string
         self.key_id = None                                    # xs:string
+        self.cenc_default_kid = None                          # xs:string
 
     def parse(self, xmlnode):
         self.scheme_id_uri = parse_attr_value(xmlnode, 'schemeIdUri', str)
         self.value = parse_attr_value(xmlnode, 'value', str)
         self.id = parse_attr_value(xmlnode, 'id', str)
         self.key_id = parse_attr_value(xmlnode, 'ns2:default_KID', str)
+        self.cenc_default_kid = parse_attr_value(xmlnode, 'cenc:default_KID', str)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'schemeIdUri', self.scheme_id_uri)
         write_attr_value(xmlnode, 'value', self.value)
         write_attr_value(xmlnode, 'id', self.id)
         write_attr_value(xmlnode, 'ns2:default_KID', self.key_id)
+        write_attr_value(xmlnode, 'cenc:default_KID', self.cenc_default_kid)
 
 
 class ContentComponent(XMLNode):
@@ -697,6 +700,8 @@ class Period(XMLNode):
 class MPEGDASH(XMLNode):
     def __init__(self):
         self.xmlns = None                                     # xmlns
+        self.xmlns_cenc = None                                # xmlns:cenc
+        self.xmlns_clearkey = None                            # xmlns:clearkey
         self.id = None                                        # xs:string
         self.type = None                                      # PresentationType
         self.profiles = ''                                    # xs:string (required)
@@ -720,6 +725,8 @@ class MPEGDASH(XMLNode):
 
     def parse(self, xmlnode):
         self.xmlns = parse_attr_value(xmlnode, 'xmlns', str)
+        self.xmlns_cenc = parse_attr_value(xmlnode, 'xmlns:cenc', str)
+        self.xmlns_clearkey = parse_attr_value(xmlnode, 'xmlns:clearkey', str)
         self.id = parse_attr_value(xmlnode, 'id', str)
         self.type = parse_attr_value(xmlnode, 'type', str)
         self.profiles = parse_attr_value(xmlnode, 'profiles', str)
@@ -743,6 +750,8 @@ class MPEGDASH(XMLNode):
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'xmlns', self.xmlns)
+        write_attr_value(xmlnode, 'xmlns:cenc', self.xmlns_cenc)
+        write_attr_value(xmlnode, 'xmlns:clearkey', self.xmlns_clearkey)
         write_attr_value(xmlnode, 'id', self.id)
         write_attr_value(xmlnode, 'type', self.type)
         write_attr_value(xmlnode, 'profiles', self.profiles)
