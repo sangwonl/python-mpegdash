@@ -3,11 +3,12 @@ from xml.dom import minidom
 # python3 support
 try:
     from urllib2 import urlopen
-except:
+except ImportError:
     from urllib.request import urlopen
 
 from .nodes import MPEGDASH
 from .utils import parse_child_nodes, write_child_node
+from .prettyprinter import pretty_print
 
 
 class MPEGDASHParser(object):
@@ -30,8 +31,16 @@ class MPEGDASHParser(object):
         return parse_child_nodes(xml_root_node, 'MPD', MPEGDASH)[0]
 
     @classmethod
-    def write(cls, mpd, filepath):
+    def get_as_doc(cls, mpd):
         xml_doc = minidom.Document()
         write_child_node(xml_doc, 'MPD', mpd)
-        with open(filepath, 'w', encoding='utf-8') as f:
-            xml_doc.writexml(f, indent='    ', addindent='    ', newl='\n', encoding='utf-8')
+        return xml_doc
+
+    @classmethod
+    def write(cls, mpd, filepath):
+        with open(filepath, 'w') as f:
+            cls.get_as_doc(mpd).writexml(f, indent='    ', addindent='    ', newl='\n')
+
+    @classmethod
+    def toprettyxml(cls, mpd):
+        return pretty_print(cls.get_as_doc(mpd).toxml())

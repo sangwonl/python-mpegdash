@@ -67,6 +67,17 @@ class BaseURL(XMLNode):
         write_attr_value(xmlnode, 'availabilityTimeComplete', self.availability_time_complete)
 
 
+class XsStringElement(XMLNode):
+    def __init__(self):
+        self.text = None
+
+    def parse(self, xmlnode):
+        self.text = parse_node_value(xmlnode, str)
+
+    def write(self, xmlnode):
+        write_node_value(xmlnode, self.text)
+
+
 class ProgramInformation(XMLNode):
     def __init__(self):
         self.lang = None                                      # xs:language
@@ -80,9 +91,9 @@ class ProgramInformation(XMLNode):
         self.lang = parse_attr_value(xmlnode, 'lang', str)
         self.more_information_url = parse_attr_value(xmlnode, 'moreInformationURL', str)
 
-        self.titles = parse_child_nodes(xmlnode, 'Title', str)
-        self.sources = parse_child_nodes(xmlnode, 'Source', str)
-        self.copyrights = parse_child_nodes(xmlnode, 'Copyright', str)
+        self.titles = parse_child_nodes(xmlnode, 'Title', XsStringElement)
+        self.sources = parse_child_nodes(xmlnode, 'Source', XsStringElement)
+        self.copyrights = parse_child_nodes(xmlnode, 'Copyright', XsStringElement)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'lang', self.lang)
@@ -285,18 +296,21 @@ class SegmentList(MultipleSegmentBase):
 class Event(XMLNode):
     def __init__(self):
         self.event_value = None                               # xs:string
+        self.message_data = None                              # xs:string
         self.presentation_time = None                         # xs:unsignedLong
         self.duration = None                                  # xs:unsignedLong
         self.id = None                                        # xs:unsignedInt
 
     def parse(self, xmlnode):
         self.event_value = parse_node_value(xmlnode, str)
+        self.message_data = parse_attr_value(xmlnode, 'messageData', str)
         self.presentation_time = parse_attr_value(xmlnode, 'presentationTime', int)
         self.duration = parse_attr_value(xmlnode, 'duration', int)
         self.id = parse_attr_value(xmlnode, 'id', int)
 
     def write(self, xmlnode):
         write_node_value(xmlnode, self.event_value)
+        write_attr_value(xmlnode, 'messageData', self.message_data)
         write_attr_value(xmlnode, 'presentationTime', self.presentation_time)
         write_attr_value(xmlnode, 'duration', self.duration)
         write_attr_value(xmlnode, 'id', self.id)
@@ -307,16 +321,19 @@ class Descriptor(XMLNode):
         self.scheme_id_uri = ''                               # xs:anyURI (required)
         self.value = None                                     # xs:string
         self.id = None                                        # xs:string
+        self.key_id = None                                    # xs:string
 
     def parse(self, xmlnode):
         self.scheme_id_uri = parse_attr_value(xmlnode, 'schemeIdUri', str)
         self.value = parse_attr_value(xmlnode, 'value', str)
         self.id = parse_attr_value(xmlnode, 'id', str)
+        self.key_id = parse_attr_value(xmlnode, 'ns2:default_KID', str)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'schemeIdUri', self.scheme_id_uri)
         write_attr_value(xmlnode, 'value', self.value)
         write_attr_value(xmlnode, 'id', self.id)
+        write_attr_value(xmlnode, 'ns2:default_KID', self.key_id)
 
 
 class ContentComponent(XMLNode):
@@ -399,6 +416,7 @@ class ContentProtection(ContentProtectionBase):
 
 class RepresentationBase(XMLNode):
     def __init__(self):
+        self.profile = None                                   # xs:string
         self.profiles = None                                  # xs:string
         self.width = None                                     # xs:unsigendInt
         self.height = None                                    # xs:unsigendInt
@@ -421,7 +439,8 @@ class RepresentationBase(XMLNode):
         self.inband_event_streams = None                      # DescriptorType*
 
     def parse(self, xmlnode):
-        self.profiles = parse_attr_value(xmlnode, 'profile', str)
+        self.profile = parse_attr_value(xmlnode, 'profile', str)
+        self.profiles = parse_attr_value(xmlnode, 'profiles', str)
         self.width = parse_attr_value(xmlnode, 'width', int)
         self.height = parse_attr_value(xmlnode, 'height', int)
         self.sar = parse_attr_value(xmlnode, 'sar', str)
@@ -443,7 +462,8 @@ class RepresentationBase(XMLNode):
         self.inband_event_streams = parse_child_nodes(xmlnode, 'InbandEventStream', Descriptor)
 
     def write(self, xmlnode):
-        write_attr_value(xmlnode, 'profile', self.profiles)
+        write_attr_value(xmlnode, 'profile', self.profile)
+        write_attr_value(xmlnode, 'profiles', self.profiles)
         write_attr_value(xmlnode, 'width', self.width)
         write_attr_value(xmlnode, 'height', self.height)
         write_attr_value(xmlnode, 'sar', self.sar)
@@ -548,6 +568,7 @@ class AdaptationSet(RepresentationBase):
         self.id = None                                        # xs:unsignedInt
         self.group = None                                     # xs:unsignedInt
         self.lang = None                                      # xs:language
+        self.label = None                                     # xs:string
         self.content_type = None                              # xs:string
         self.par = None                                       # RatioType
         self.min_bandwidth = None                             # xs:unsignedInt
@@ -559,6 +580,7 @@ class AdaptationSet(RepresentationBase):
         self.min_frame_rate = None                            # FrameRateType
         self.max_frame_rate = None                            # FrameRateType
         self.segment_alignment = None                         # ConditionalUintType
+        self.selection_priority = None                        # xs:unsignedInt
         self.subsegment_alignment = None                      # ConditionalUintType
         self.subsegment_starts_with_sap = None                # SAPType
         self.bitstream_switching = None                       # xs:boolean
@@ -582,6 +604,7 @@ class AdaptationSet(RepresentationBase):
         self.id = parse_attr_value(xmlnode, 'id', int)
         self.group = parse_attr_value(xmlnode, 'group', int)
         self.lang = parse_attr_value(xmlnode, 'lang', str)
+        self.label = parse_attr_value(xmlnode, 'label', str)
         self.content_type = parse_attr_value(xmlnode, 'contentType', str)
         self.par = parse_attr_value(xmlnode, 'par', str)
         self.min_bandwidth = parse_attr_value(xmlnode, 'minBandwidth', int)
@@ -593,6 +616,7 @@ class AdaptationSet(RepresentationBase):
         self.min_frame_rate = parse_attr_value(xmlnode, 'minFrameRate', str)
         self.max_frame_rate = parse_attr_value(xmlnode, 'maxFrameRate', str)
         self.segment_alignment = parse_attr_value(xmlnode, 'segmentAlignment', bool)
+        self.selection_priority = parse_attr_value(xmlnode, 'selectionPriority', int)
         self.subsegment_alignment = parse_attr_value(xmlnode, 'subsegmentAlignment', bool)
         self.subsegment_starts_with_sap = parse_attr_value(xmlnode, 'subsegmentStartsWithSAP', int)
         self.bitstream_switching = parse_attr_value(xmlnode, 'bitstreamSwitching', bool)
@@ -615,6 +639,7 @@ class AdaptationSet(RepresentationBase):
         write_attr_value(xmlnode, 'id', self.id)
         write_attr_value(xmlnode, 'group', self.group)
         write_attr_value(xmlnode, 'lang', self.lang)
+        write_attr_value(xmlnode, 'label', self.label)
         write_attr_value(xmlnode, 'contentType', self.content_type)
         write_attr_value(xmlnode, 'par', self.par)
         write_attr_value(xmlnode, 'minBandwidth', self.min_bandwidth)
@@ -626,6 +651,7 @@ class AdaptationSet(RepresentationBase):
         write_attr_value(xmlnode, 'minFrameRate', self.min_frame_rate)
         write_attr_value(xmlnode, 'maxFrameRate', self.max_frame_rate)
         write_attr_value(xmlnode, 'segmentAlignment', self.segment_alignment)
+        write_attr_value(xmlnode, 'selectionPriority', self.selection_priority)
         write_attr_value(xmlnode, 'subsegmentAlignment', self.subsegment_alignment)
         write_attr_value(xmlnode, 'subsegmentStartsWithSAP', self.subsegment_starts_with_sap)
         write_attr_value(xmlnode, 'bitstreamSwitching', self.bitstream_switching)
@@ -736,6 +762,7 @@ class MPEGDASH(XMLNode):
         self.locations = None                                 # xs:anyURI*
         self.periods = None                                   # PeriodType+
         self.metrics = None                                   # MetricsType*
+        self.utc_timings = None                               # DescriptorType*
 
         self.xmlns_cenc = None                                # xs:string
         self.xmlns_xsi = None                                 # xs:string
@@ -762,9 +789,10 @@ class MPEGDASH(XMLNode):
 
         self.program_informations = parse_child_nodes(xmlnode, 'ProgramInformation', ProgramInformation)
         self.base_urls = parse_child_nodes(xmlnode, 'BaseURL', BaseURL)
-        self.locations = parse_child_nodes(xmlnode, 'Location', str)
+        self.locations = parse_child_nodes(xmlnode, 'Location', XsStringElement)
         self.periods = parse_child_nodes(xmlnode, 'Period', Period)
         self.metrics = parse_child_nodes(xmlnode, 'Metrics', Metrics)
+        self.utc_timings = parse_child_nodes(xmlnode, 'UTCTiming', Descriptor)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'xmlns', self.xmlns)
@@ -791,3 +819,4 @@ class MPEGDASH(XMLNode):
         write_child_node(xmlnode, 'Location', self.locations)
         write_child_node(xmlnode, 'Period', self.periods)
         write_child_node(xmlnode, 'Metrics', self.metrics)
+        write_child_node(xmlnode, 'UTCTiming', self.utc_timings)

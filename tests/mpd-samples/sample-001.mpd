@@ -4,7 +4,7 @@
     <Period duration="PT30S">
         <BaseURL>ad/</BaseURL>
         <!-- Everything in one Adaptation Set -->
-        <AdaptationSet mimeType="video/mp2t">
+        <AdaptationSet selectionPriority="123" mimeType="video/mp2t">
             <!-- 720p Representation at 3.2 Mbps -->
             <Representation id="720p" bandwidth="3200000" width="1280" height="720">
                 <!-- Just use one segment, since the ad is only 30 seconds long -->
@@ -26,7 +26,7 @@
     <Period duration="PT5M">
         <BaseURL>main/</BaseURL>
         <!-- Just the video -->
-        <AdaptationSet mimeType="video/mp2t">
+        <AdaptationSet mimeType="video/mp2t" profiles="urn:mpeg:dash:profile:full:2011">
             <BaseURL>video/</BaseURL>
             <!-- 720p Representation at 3.2 Mbps -->
             <Representation id="720p" bandwidth="3200000" width="1280" height="720">
@@ -64,7 +64,7 @@
             </Representation>
         </AdaptationSet>
         <!-- Just the audio -->
-        <AdaptationSet mimeType="audio/mp2t">
+        <AdaptationSet mimeType="audio/mp2t" lang="eng" label="English">
             <BaseURL>audio/</BaseURL>
             <!-- We're just going to offer one audio representation, since audio bandwidth isn't very
                  important. -->

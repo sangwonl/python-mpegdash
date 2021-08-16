@@ -1,7 +1,7 @@
 try:
-    import unittest2 as unittest
-except:
     import unittest
+except ImportError:
+    import unittest2 as unittest
 
 from mpegdash.parser import MPEGDASHParser
 
@@ -35,6 +35,18 @@ class XML2MPDTestCase(unittest.TestCase):
     def test_xml2mpd_from_url(self):
         mpd_url = 'http://yt-dash-mse-test.commondatastorage.googleapis.com/media/motion-20120802-manifest.mpd'
         self.assert_mpd(MPEGDASHParser.parse(mpd_url))
+
+    def test_xml2mpd_from_file_with_utc_timing(self):
+        mpd = MPEGDASHParser.parse('./tests/mpd-samples/utc_timing.mpd')
+        self.assertEqual(mpd.utc_timings[0].scheme_id_uri, 'urn:mpeg:dash:utc:http-iso:2014')
+        self.assertEqual(mpd.utc_timings[0].value, 'https://time.akamai.com/?iso')
+
+    def test_xml2mpd_from_file_with_event_messagedata(self):
+        mpd = MPEGDASHParser.parse('./tests/mpd-samples/with_event_message_data.mpd')
+        self.assertTrue(mpd.periods[0].event_streams[0].events[0].message_data is not None)
+        self.assertTrue(mpd.periods[0].event_streams[0].events[0].event_value is None)
+        self.assertTrue(mpd.periods[0].event_streams[0].events[1].message_data is None)
+        self.assertEqual(mpd.periods[0].event_streams[0].events[1].event_value, "Some Random Event Text")
 
     def assert_mpd(self, mpd):
         self.assertTrue(mpd is not None)
