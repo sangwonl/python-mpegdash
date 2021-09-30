@@ -348,11 +348,13 @@ class PSSH(XMLNode):
 
 class ContentProtectionComponent(XMLNode):
     def __init__(self):
-        self.scheme_id_uri = ""  # xs:anyURI (required)
-        self.value = None  # xs:string
-        self.id = None  # xs:string
-        self.key_id = None  # xs:string
-        self.pssh = None
+        self.scheme_id_uri = ""                            # xs:anyURI (required)
+        self.value = None                                  # xs:string
+        self.id = None                                     # xs:string
+        self.pssh = None                                   # PSSH
+        self.default_key_id = None                         # xs:string
+        self.ns2_key_id = None                             # xs:string
+        self.cenc_key_id = None                            # xs:string
 
     def parse(self, xmlnode):
         self.scheme_id_uri = parse_attr_value(xmlnode, "schemeIdUri", str)
