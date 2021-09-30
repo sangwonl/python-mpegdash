@@ -733,7 +733,7 @@ class MPEGDASH(XMLNode):
         self.id = None                                        # xs:string
         self.type = None                                      # PresentationType
         self.profiles = ''                                    # xs:string (required)
-        self.cenc = None                                          # xs:string
+        self.cenc = None                                      # xs:string
         self.availability_start_time = None                   # xs:dateTime
         self.availability_end_time = None                     # xs:dateTime
         self.publish_time = None                              # xs:dateTime
