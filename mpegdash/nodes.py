@@ -358,14 +358,18 @@ class ContentProtectionComponent(XMLNode):
         self.scheme_id_uri = parse_attr_value(xmlnode, "schemeIdUri", str)
         self.value = parse_attr_value(xmlnode, "value", str)
         self.id = parse_attr_value(xmlnode, "id", str)
-        self.key_id = parse_attr_value(xmlnode, "ns2:default_KID", str)
-        self.pssh = parse_child_nodes(xmlnode, "pssh", PSSH)
+        self.default_key_id = parse_attr_value(xmlnode, "default_KID", str)
+        self.ns2_key_id = parse_attr_value(xmlnode, "ns2:default_KID", str)
+        self.cenc_key_id = parse_attr_value(xmlnode, "cenc:default_KID", str)
+        self.pssh = parse_child_nodes(xmlnode, "cenc:pssh", PSSH)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, "schemeIdUri", self.scheme_id_uri)
         write_attr_value(xmlnode, "value", self.value)
         write_attr_value(xmlnode, "id", self.id)
-        write_attr_value(xmlnode, "ns2:default_KID", self.key_id)
+        write_attr_value(xmlnode, "default_KID", self.default_key_id)
+        write_attr_value(xmlnode, "ns2:default_KID", self.ns2_key_id)
+        write_attr_value(xmlnode, "cenc:default_KID", self.cenc_key_id)
         write_child_node(xmlnode, "cenc:pssh", self.pssh)
 
 class ContentComponent(XMLNode):
