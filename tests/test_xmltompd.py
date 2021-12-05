@@ -48,6 +48,32 @@ class XML2MPDTestCase(unittest.TestCase):
         self.assertTrue(mpd.periods[0].event_streams[0].events[1].message_data is None)
         self.assertEqual(mpd.periods[0].event_streams[0].events[1].event_value, "Some Random Event Text")
 
+    def test_xml2mpd_parse_vector_type_attributes(self):
+        mpd_string = '''
+        <MPD xmlns="urn:mpeg:DASH:schema:MPD:2011" mediaPresentationDuration="PT0H1M52.43S" minBufferTime="PT1.5S"
+        profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" type="static">
+          <Period duration="PT0H1M52.43S" start="PT0S">
+            <AdaptationSet>
+              <ContentComponent contentType="video" id="1" />
+              <Representation bandwidth="4190760" codecs="avc1.640028" height="1080" id="1" mimeType="video/mp4" width="1920">
+                <SubRepresentation bandwidth="117600" codecs="mp4a.40.5" contentComponent="102 104"></SubRepresentation>
+                <BaseURL>motion-20120802-89.mp4</BaseURL>
+                <SegmentBase indexRange="674-981">
+                  <Initialization range="0-673" />
+                </SegmentBase>
+              </Representation>
+            </AdaptationSet>
+          </Period>
+        </MPD>
+        '''
+        mpd = MPEGDASHParser.parse(mpd_string)
+        self.assert_mpd(mpd)
+
+        sub_rep = mpd.periods[0].adaptation_sets[0].representations[0].sub_representations[0]
+        self.assertEqual(len(sub_rep.content_component), 2)
+        self.assertEqual(sub_rep.content_component[0], '102')
+        self.assertEqual(sub_rep.content_component[1], '104')
+
     def assert_mpd(self, mpd):
         self.assertTrue(mpd is not None)
         self.assertTrue(len(mpd.periods) > 0)
