@@ -56,3 +56,15 @@ class MPD2XMLTestCase(unittest.TestCase):
             xmlstrout2 = MPEGDASHParser.toprettyxml(mpd2)
             # and check the are equal
             self.assertEqual(xmlstrout, xmlstrout2)
+
+    def test_content_protection_tag_parsing(self):
+        expected_mpd_string = """
+            <ContentProtection schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="6c28b624-5854-5b8c-8033-9d61ac0c039c"/>
+            <ContentProtection schemeIdUri="urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed">
+                <cenc:pssh>AAAAWnBzc2gAAAAA7e+LqXnWSs6jyCfc1R0h7QAAADoiMjc2NjQ2ZjYzNjk3MDY4NjU3MjBlNWZhZjdmODhiOTQ1ZWJhYmYzOWM2MTc4ZmFkNTc2SOPclZsG</cenc:pssh>
+            </ContentProtection>
+        """
+
+        with open('./tests/mpd-samples/with_content_protection.mpd') as f:
+            mpd = MPEGDASHParser.parse(f.read())
+            self.assertTrue(expected_mpd_string in MPEGDASHParser.toprettyxml(mpd))
