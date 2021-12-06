@@ -351,7 +351,7 @@ class ContentProtection(XMLNode):
         self.pssh = None                                   # PSSH
         self.default_key_id = None                         # xs:string
         self.ns2_key_id = None                             # xs:string
-        self.cenc_key_id = None                            # xs:string
+        self.cenc_default_kid = None                            # xs:string
 
     def parse(self, xmlnode):
         self.scheme_id_uri = parse_attr_value(xmlnode, "schemeIdUri", str)
@@ -359,7 +359,7 @@ class ContentProtection(XMLNode):
         self.id = parse_attr_value(xmlnode, "id", str)
         self.default_key_id = parse_attr_value(xmlnode, "default_KID", str)
         self.ns2_key_id = parse_attr_value(xmlnode, "ns2:default_KID", str)
-        self.cenc_key_id = parse_attr_value(xmlnode, "cenc:default_KID", str)
+        self.cenc_default_kid = parse_attr_value(xmlnode, "cenc:default_KID", str)
         self.pssh = parse_child_nodes(xmlnode, "cenc:pssh", PSSH)
 
     def write(self, xmlnode):
@@ -368,7 +368,7 @@ class ContentProtection(XMLNode):
         write_attr_value(xmlnode, "id", self.id)
         write_attr_value(xmlnode, "default_KID", self.default_key_id)
         write_attr_value(xmlnode, "ns2:default_KID", self.ns2_key_id)
-        write_attr_value(xmlnode, "cenc:default_KID", self.cenc_key_id)
+        write_attr_value(xmlnode, "cenc:default_KID", self.cenc_default_kid)
         write_child_node(xmlnode, "cenc:pssh", self.pssh)
 
 class ContentComponent(XMLNode):
