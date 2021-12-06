@@ -1,4 +1,4 @@
-from os.path import dirname, abspath, join, exists
+from os.path import exists
 from setuptools import setup
 
 long_description = None
@@ -21,7 +21,7 @@ setup(
   url="https://github.com/sangwonl/python-mpegdash",
   tests_require=["unittest2"],
   test_suite="tests.my_module_suite",
-  classifiers = [
+  classifiers=[
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Environment :: Other Environment",
