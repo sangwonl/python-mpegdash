@@ -426,7 +426,7 @@ class RepresentationBase(XMLNode):
 
         self.frame_packings = None                            # DescriptorType*
         self.audio_channel_configurations = None              # DescriptorType*
-        self.content_protections = None                       # ContentProtectionComponent*
+        self.content_protections = None                       # ContentProtection*
         self.essential_properties = None                      # DescriptorType*
         self.supplemental_properties = None                   # DescriptorType*
         self.inband_event_streams = None                      # DescriptorType*
