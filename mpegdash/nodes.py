@@ -351,7 +351,7 @@ class ContentProtection(XMLNode):
         self.pssh = None                                   # PSSH
         self.default_key_id = None                         # xs:string
         self.ns2_key_id = None                             # xs:string
-        self.cenc_default_kid = None                            # xs:string
+        self.cenc_default_kid = None                       # xs:string
 
     def parse(self, xmlnode):
         self.scheme_id_uri = parse_attr_value(xmlnode, "schemeIdUri", str)
