@@ -320,20 +320,56 @@ class Descriptor(XMLNode):
         self.scheme_id_uri = ''                               # xs:anyURI (required)
         self.value = None                                     # xs:string
         self.id = None                                        # xs:string
-        self.key_id = None                                    # xs:string
 
     def parse(self, xmlnode):
         self.scheme_id_uri = parse_attr_value(xmlnode, 'schemeIdUri', str)
         self.value = parse_attr_value(xmlnode, 'value', str)
         self.id = parse_attr_value(xmlnode, 'id', str)
-        self.key_id = parse_attr_value(xmlnode, 'ns2:default_KID', str)
 
     def write(self, xmlnode):
         write_attr_value(xmlnode, 'schemeIdUri', self.scheme_id_uri)
         write_attr_value(xmlnode, 'value', self.value)
         write_attr_value(xmlnode, 'id', self.id)
-        write_attr_value(xmlnode, 'ns2:default_KID', self.key_id)
 
+
+class PSSH(XMLNode):
+    def __init__(self):
+        self.pssh = None
+
+    def parse(self, xmlnode):
+        self.pssh = parse_node_value(xmlnode, str)
+
+    def write(self, xmlnode):
+        write_node_value(xmlnode, self.pssh)
+
+
+class ContentProtection(XMLNode):
+    def __init__(self):
+        self.scheme_id_uri = ""                            # xs:anyURI (required)
+        self.value = None                                  # xs:string
+        self.id = None                                     # xs:string
+        self.pssh = None                                   # PSSH
+        self.default_key_id = None                         # xs:string
+        self.ns2_key_id = None                             # xs:string
+        self.cenc_default_kid = None                       # xs:string
+
+    def parse(self, xmlnode):
+        self.scheme_id_uri = parse_attr_value(xmlnode, "schemeIdUri", str)
+        self.value = parse_attr_value(xmlnode, "value", str)
+        self.id = parse_attr_value(xmlnode, "id", str)
+        self.default_key_id = parse_attr_value(xmlnode, "default_KID", str)
+        self.ns2_key_id = parse_attr_value(xmlnode, "ns2:default_KID", str)
+        self.cenc_default_kid = parse_attr_value(xmlnode, "cenc:default_KID", str)
+        self.pssh = parse_child_nodes(xmlnode, "cenc:pssh", PSSH)
+
+    def write(self, xmlnode):
+        write_attr_value(xmlnode, "schemeIdUri", self.scheme_id_uri)
+        write_attr_value(xmlnode, "value", self.value)
+        write_attr_value(xmlnode, "id", self.id)
+        write_attr_value(xmlnode, "default_KID", self.default_key_id)
+        write_attr_value(xmlnode, "ns2:default_KID", self.ns2_key_id)
+        write_attr_value(xmlnode, "cenc:default_KID", self.cenc_default_kid)
+        write_child_node(xmlnode, "cenc:pssh", self.pssh)
 
 class ContentComponent(XMLNode):
     def __init__(self):
@@ -390,7 +426,7 @@ class RepresentationBase(XMLNode):
 
         self.frame_packings = None                            # DescriptorType*
         self.audio_channel_configurations = None              # DescriptorType*
-        self.content_protections = None                       # DescriptorType*
+        self.content_protections = None                       # ContentProtection*
         self.essential_properties = None                      # DescriptorType*
         self.supplemental_properties = None                   # DescriptorType*
         self.inband_event_streams = None                      # DescriptorType*
@@ -414,7 +450,7 @@ class RepresentationBase(XMLNode):
 
         self.frame_packings = parse_child_nodes(xmlnode, 'FramePacking', Descriptor)
         self.audio_channel_configurations = parse_child_nodes(xmlnode, 'AudioChannelConfiguration', Descriptor)
-        self.content_protections = parse_child_nodes(xmlnode, 'ContentProtection', Descriptor)
+        self.content_protections = parse_child_nodes(xmlnode, 'ContentProtection', ContentProtection)
         self.essential_properties = parse_child_nodes(xmlnode, 'EssentialProperty', Descriptor)
         self.supplemental_properties = parse_child_nodes(xmlnode, 'SupplementalProperty', Descriptor)
         self.inband_event_streams = parse_child_nodes(xmlnode, 'InbandEventStream', Descriptor)
@@ -700,6 +736,7 @@ class MPEGDASH(XMLNode):
         self.id = None                                        # xs:string
         self.type = None                                      # PresentationType
         self.profiles = ''                                    # xs:string (required)
+        self.cenc = None                                      # xs:string
         self.availability_start_time = None                   # xs:dateTime
         self.availability_end_time = None                     # xs:dateTime
         self.publish_time = None                              # xs:dateTime
@@ -723,6 +760,7 @@ class MPEGDASH(XMLNode):
         self.id = parse_attr_value(xmlnode, 'id', str)
         self.type = parse_attr_value(xmlnode, 'type', str)
         self.profiles = parse_attr_value(xmlnode, 'profiles', str)
+        self.cenc = parse_attr_value(xmlnode, "xmlns:cenc", str)
         self.availability_start_time = parse_attr_value(xmlnode, 'availabilityStartTime', str)
         self.availability_end_time = parse_attr_value(xmlnode, 'availabilityEndTime', str)
         self.publish_time = parse_attr_value(xmlnode, 'publishTime', str)
@@ -746,6 +784,7 @@ class MPEGDASH(XMLNode):
         write_attr_value(xmlnode, 'id', self.id)
         write_attr_value(xmlnode, 'type', self.type)
         write_attr_value(xmlnode, 'profiles', self.profiles)
+        write_attr_value(xmlnode, "xmlns:cenc", self.cenc)
         write_attr_value(xmlnode, 'availabilityStartTime', self.availability_start_time)
         write_attr_value(xmlnode, 'availabilityEndTime', self.availability_end_time)
         write_attr_value(xmlnode, 'publishTime', self.publish_time)

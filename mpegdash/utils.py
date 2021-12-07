@@ -7,7 +7,7 @@ import re
 def _find_child_nodes_by_name(parent, name):
     nodes = []
     for node in parent.childNodes:
-        if node.nodeType == node.ELEMENT_NODE and node.localName == name:
+        if node.nodeType == node.ELEMENT_NODE and (node.localName == name or node.nodeName == name):
             nodes.append(node)
     return nodes
 
