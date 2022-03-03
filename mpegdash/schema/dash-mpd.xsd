@@ -293,6 +293,7 @@
         </xs:sequence>
         <xs:attribute name="duration" type="xs:unsignedInt"/>
         <xs:attribute name="startNumber" type="xs:unsignedInt"/>
+        <xs:attribute name="endNumber" type="xs:unsignedInt"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
