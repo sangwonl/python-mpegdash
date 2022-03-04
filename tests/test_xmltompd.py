@@ -76,10 +76,16 @@ class XML2MPDTestCase(unittest.TestCase):
 
     def test_xml2mpd_from_file_with_content_protection(self):
         mpd = MPEGDASHParser.parse('./tests/mpd-samples/with_content_protection.mpd')
-        self.assertEqual("6c28b624-5854-5b8c-8033-9d61ac0c039c", mpd.periods[0].adaptation_sets[0].content_protections[0].cenc_default_kid)
-        self.assertEqual("urn:mpeg:dash:mp4protection:2011", mpd.periods[0].adaptation_sets[0].content_protections[0].scheme_id_uri)
+        self.assertEqual(
+          "6c28b624-5854-5b8c-8033-9d61ac0c039c",
+          mpd.periods[0].adaptation_sets[0].content_protections[0].cenc_default_kid
+        )
+        self.assertEqual(
+          "urn:mpeg:dash:mp4protection:2011",
+          mpd.periods[0].adaptation_sets[0].content_protections[0].scheme_id_uri
+        )
         self.assertTrue(mpd.periods[0].adaptation_sets[0].content_protections[1].pssh[0].pssh is not None)
-    
+
     def assert_mpd(self, mpd):
         self.assertTrue(mpd is not None)
         self.assertTrue(len(mpd.periods) > 0)

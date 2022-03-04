@@ -371,6 +371,7 @@ class ContentProtection(XMLNode):
         write_attr_value(xmlnode, "cenc:default_KID", self.cenc_default_kid)
         write_child_node(xmlnode, "cenc:pssh", self.pssh)
 
+
 class ContentComponent(XMLNode):
     def __init__(self):
         self.id = None                                        # xs:unsigendInt
