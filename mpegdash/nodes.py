@@ -226,6 +226,7 @@ class MultipleSegmentBase(SegmentBase):
 
         self.duration = None                                  # xs:unsignedInt
         self.start_number = None                              # xs:unsignedInt
+        self.end_number = None                                # xs:unsignedInt
 
         self.segment_timelines = None                         # SegmentTimelineType*
         self.bitstream_switchings = None                      # URLType*
@@ -235,6 +236,7 @@ class MultipleSegmentBase(SegmentBase):
 
         self.duration = parse_attr_value(xmlnode, 'duration', int)
         self.start_number = parse_attr_value(xmlnode, 'startNumber', int)
+        self.end_number = parse_attr_value(xmlnode, 'endNumber', int)
 
         self.segment_timelines = parse_child_nodes(xmlnode, 'SegmentTimeline', SegmentTimeline)
         self.bitstream_switchings = parse_child_nodes(xmlnode, 'BitstreamSwitching', URL)
@@ -244,6 +246,7 @@ class MultipleSegmentBase(SegmentBase):
 
         write_attr_value(xmlnode, 'duration', self.duration)
         write_attr_value(xmlnode, 'startNumber', self.start_number)
+        write_attr_value(xmlnode, 'endNumber', self.end_number)
 
         write_child_node(xmlnode, 'SegmentTimeline', self.segment_timelines)
         write_child_node(xmlnode, 'BitstreamSwitching', self.bitstream_switchings)
