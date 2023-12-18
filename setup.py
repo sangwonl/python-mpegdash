@@ -17,9 +17,7 @@ setup(
   license="MIT",
   zip_safe=False,
   include_package_data=True,
-  install_requires=["future"],
   url="https://github.com/sangwonl/python-mpegdash",
-  tests_require=["unittest2"],
   test_suite="tests.my_module_suite",
   classifiers=[
     "Programming Language :: Python",

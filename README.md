@@ -1,7 +1,7 @@
 
 # python-mpegdash
 
-MPEG-DASH MPD (Media Presentation Description) Parser compatible with Python 2.6+ and Python 3.
+MPEG-DASH MPD (Media Presentation Description) Parser compatible with Python 3+.
 
 [![Build Status](https://img.shields.io/github/workflow/status/sangwonl/python-mpegdash/Build%20Status?label=Python%202.7%2B%20builds)](https://github.com/sangwonl/python-mpegdash/actions?query=workflow%3A%22Build+Status%22)
 [![License](https://img.shields.io/github/license/sangwonl/python-mpegdash?style=flat)](https://github.com/sangwonl/python-mpegdash/blob/master/LICENSE)
@@ -19,7 +19,6 @@ $ pip install mpegdash
 ## Test
 
 ```bash
-$ python -m unittest discover
 $ python3 -m unittest discover
 ```
 

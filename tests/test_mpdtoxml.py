@@ -1,7 +1,4 @@
-try:
-    import unittest
-except ImportError:
-    import unittest2 as unittest
+import unittest
 
 from sys import version_info
 from mpegdash.parser import MPEGDASHParser
