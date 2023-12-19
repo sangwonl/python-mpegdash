@@ -18,7 +18,7 @@ def parse_child_nodes(xmlnode, tag_name, node_type):
 
     nodes = []
     for elem in elements:
-        if node_type is str:
+        if isinstance(node_type, str):
             node = xmlnode.firstChild.nodeValue
         else:
             node = node_type()

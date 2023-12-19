@@ -19,7 +19,7 @@ $ pip install mpegdash
 ## Test
 
 ```bash
-$ python3 -m unittest discover
+$ python -m unittest discover
 ```
 
 * * *
