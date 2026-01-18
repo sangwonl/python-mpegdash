@@ -599,7 +599,15 @@ class AdaptationSet(RepresentationBase):
         RepresentationBase.parse(self, xmlnode)
 
         self.id = parse_attr_value(xmlnode, 'id', int)
-        self.group = parse_attr_value(xmlnode, 'group', int)
+        try:
+            self.group = parse_attr_value(xmlnode, 'group', int)
+        except ValueError as e:
+            # This should never happen, as the specs seem to imply that `group` is always an integer.
+            # But there is at least one case (TIDAL) that pushes strings on the manifest, and it's
+            # better not to break parsing in that case.
+            # See https://github.com/EbbLabs/python-tidal/issues/396
+            self.group = parse_attr_value(xmlnode, 'group', str)
+
         self.lang = parse_attr_value(xmlnode, 'lang', str)
         self.label = parse_attr_value(xmlnode, 'label', str)
         self.content_type = parse_attr_value(xmlnode, 'contentType', str)
