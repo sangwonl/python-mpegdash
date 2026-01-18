@@ -13,7 +13,7 @@ setup(
   long_description_content_type='text/markdown',
   author="sangwonl",
   author_email="gamzabaw@gmail.com",
-  version="0.4.0",
+  version="0.4.1",
   license="MIT",
   zip_safe=False,
   include_package_data=True,
